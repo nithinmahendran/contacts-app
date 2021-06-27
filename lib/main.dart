@@ -21,8 +21,18 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: "Poppins",
           primarySwatch: Colors.blue,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              onPrimary: Colors.white,
+              primary: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)
+              )
+              
+            ),
+          ),
         ),
-        home: IntroScreen());
+        home: SplashScreen());
   }
 }
 
@@ -41,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
         Duration(seconds: 3),
         () => Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => ContactsScreen())));
+            MaterialPageRoute(builder: (context) => IntroScreen())));
   }
 
   @override
@@ -56,7 +66,11 @@ class _SplashScreenState extends State<SplashScreen> {
             height: 110.0,
             child: Image.asset('assets/images/kontaktlogo.png'),
           ),
-          Text("Kontakt", style: splashScreen, textAlign: TextAlign.center),
+          Text(
+            "Kontakt",
+            style: splashScreen,
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
