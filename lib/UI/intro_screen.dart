@@ -1,6 +1,7 @@
 import 'package:contactsapp/global.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({Key? key}) : super(key: key);
@@ -10,14 +11,37 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
+  final _pageController = PageController();
+  final _currentPageNotifier = ValueNotifier<int>(0);
   String? _chosenValue;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: PageView(
-          children: <Widget>[intro1(), intro2()],
-        ));
+        body: Stack(children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 190.0, bottom: 26.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SmoothPageIndicator(
+                    controller: _pageController, // PageController
+                    count: 2,
+                    effect: WormEffect(
+                        spacing: 15.0,
+                        dotWidth: 11.0,
+                        dotHeight: 11.0,
+                        activeDotColor: Colors.black,
+                        dotColor: Color(0xffbcbcbc)), // your preferred effect
+                    onDotClicked: (index) {}),
+              ],
+            ),
+          ),
+          PageView(
+            controller: _pageController,
+            children: <Widget>[intro1(), intro2()],
+          ),
+        ]));
   }
 
   Widget intro1() {
@@ -53,10 +77,10 @@ class _IntroScreenState extends State<IntroScreen> {
             )),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(bottom:20.0,right: 15.0),
+            padding: const EdgeInsets.only(bottom: 20.0, right: 15.0),
             child: Align(
               alignment: Alignment.bottomRight,
-                        child: Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text("Next", style: introNPbtn),
@@ -143,20 +167,22 @@ class _IntroScreenState extends State<IntroScreen> {
                     ),
 
                     items: <String>[
-                      'Android',
-                      'IOS',
-                      'Flutter',
-                      'Node',
-                      'Java',
-                      'Python',
-                      'PHP',
+                      'Computer Science & Engineering',
+                      'Information Science & Engineering',
+                      'Mechanical Engineering',
+                      'Civil Engineering',
+                      'Artifical Intelligence',
+                      'Data Science',
+      
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0, right: 10.0),
+                          padding:
+                              const EdgeInsets.only(left: 12.0, right: 10.0),
                           child: Text(
                             value,
+                            style: dropDownList,
                           ),
                         ),
                       );
@@ -164,7 +190,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     hint: Padding(
                       padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                       child: Text(
-                        "Please choose a langauage",
+                        "Please choose a department",
                         style: dropDownList,
                       ),
                     ),
@@ -193,31 +219,29 @@ class _IntroScreenState extends State<IntroScreen> {
                   ),
                 ),
               ),
-
-              
             ],
           ),
         ),
         Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom:20.0,left: 15.0),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          size: 15.0,
-                        ),
-                        SizedBox(
-                          width: 3.0,
-                        ),
-                        Text("Previous", style: introNPbtn),
-                      ],
-                    ),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20.0, left: 15.0),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    size: 15.0,
                   ),
-                ),
-              )
+                  SizedBox(
+                    width: 3.0,
+                  ),
+                  Text("Previous", style: introNPbtn),
+                ],
+              ),
+            ),
+          ),
+        )
       ],
     );
   }

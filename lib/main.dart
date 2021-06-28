@@ -1,5 +1,5 @@
-import 'dart:async';
 
+import 'dart:async';
 import 'package:contactsapp/UI/contact_screen.dart';
 import 'package:contactsapp/UI/intro_screen.dart';
 import 'package:contactsapp/global.dart';

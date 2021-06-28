@@ -59,7 +59,7 @@ TextStyle descTextIntro = TextStyle(
 
 TextStyle dropDownList = TextStyle(
   fontSize: 15.0,
-  color: const Color(0xFFBCBCBC),
+  color: const Color(0xFF757675),
   fontWeight: FontWeight.w400
 
 );
