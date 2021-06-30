@@ -10,6 +10,7 @@ class ContactsScreen extends StatefulWidget {
 
 class _ContactsScreenState extends State<ContactsScreen> {
   @override
+  List<bool> isSelected = [false, false, false, false, false, false, false];
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -32,10 +33,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     color: const Color(0xffededed)),
               ),
               Container(
-                  margin: EdgeInsets.only(top: 25.0, right: 260.0),
+                  margin: EdgeInsets.only(top: 25.0, right: 270.0),
                   child: Text(
                     "Branch",
-                    style: branchSelection,
+                    style: sideHeaders,
                     textAlign: TextAlign.start,
                   )),
               Container(
@@ -58,7 +59,81 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     ),
                   ],
                 ),
-              )
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 15.0, left: 20.0, right: 20.0),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: ToggleButtons(
+                            fillColor: Color(0xffB9FFB8),
+                            highlightColor: Color(0xffB9FFB8),
+                            splashColor: Color(0xffB9FFB8),
+                            renderBorder: false,
+                            borderRadius: BorderRadius.circular(8.0),
+                            children: [
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 20.0, right: 20.0),
+                                  child: Text('CSE', style: homePageBtn)),
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 25.0, right: 25.0),
+                                  child: Text('ISE', style: homePageBtn)),
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 25.0, right: 25.0),
+                                  child: Text('ME', style: homePageBtn)),
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 20.0, right: 25.0),
+                                  child: Text('ECE', style: homePageBtn)),
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 20.0, right: 25.0),
+                                  child: Text('CV', style: homePageBtn)),
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 25.0, right: 25.0),
+                                  child: Text('DS', style: homePageBtn)),
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 25.0, right: 25.0),
+                                  child: Text('AI', style: homePageBtn)),
+                            ],
+                            isSelected: isSelected,
+                            onPressed: (int index) {
+                              setState(() {
+                                for (int indexBtn = 0;
+                                    indexBtn < isSelected.length;
+                                    indexBtn++) {
+                                  if (indexBtn == index) {
+                                    print(index);
+                                    isSelected[indexBtn] =
+                                        !isSelected[indexBtn];
+                                  } else {
+                                    isSelected[indexBtn] = false;
+                                  }
+                                }
+                              });
+                            }),
+                      ),
+                    )
+
+                    // color: pressAttention! ? Colors.grey : Colors.blue,
+                    // onPressed: () =>
+                    //     setState(() => pressAttention = !pressAttention!),
+                  ],
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.only(top: 25.0, right: 260.0),
+                  child: Text(
+                    "Contacts",
+                    style: sideHeaders,
+                    textAlign: TextAlign.start,
+                  )),
             ],
           ),
         ),

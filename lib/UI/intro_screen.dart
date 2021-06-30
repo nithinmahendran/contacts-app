@@ -170,6 +170,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       'Computer Science & Engineering',
                       'Information Science & Engineering',
                       'Mechanical Engineering',
+                      'Electronics & Communications Engineering'
                       'Civil Engineering',
                       'Artifical Intelligence',
                       'Data Science',

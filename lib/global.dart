@@ -70,3 +70,17 @@ TextStyle allBtns = TextStyle(
   fontWeight: FontWeight.w400
 
 );
+
+TextStyle homePageBtn = TextStyle(
+  fontSize: 20.0,
+  color: Colors.black,
+  fontWeight: FontWeight.w600
+
+);
+
+TextStyle sideHeaders = TextStyle(
+  fontSize: 20.0,
+  color: Colors.black,
+  fontWeight: FontWeight.w600
+
+);
