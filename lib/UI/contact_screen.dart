@@ -1,3 +1,4 @@
+import 'package:cnav/cnav.dart';
 import 'package:contactsapp/global.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,7 @@ class ContactsScreen extends StatefulWidget {
 class _ContactsScreenState extends State<ContactsScreen> {
   @override
   List<bool> isSelected = [false, false, false, false, false, false, false];
+  int _currentIndex = 1;
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -134,9 +136,84 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     style: sideHeaders,
                     textAlign: TextAlign.start,
                   )),
+              Expanded(
+                  child: ListView(padding: EdgeInsets.only(top: 10), children: [
+                ListTile(
+                  leading: FlutterLogo(size: 56.0),
+                  title: Text('Alexa Bezos',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text('Assistant Professor'),
+                  trailing: Icon(Icons.call),
+                ),
+                ListTile(
+                  leading: FlutterLogo(size: 56.0),
+                  title: Text('Two-line ListTile'),
+                  subtitle: Text('Here is a second line'),
+                  trailing: Icon(Icons.more_vert),
+                ),
+                ListTile(
+                  leading: FlutterLogo(size: 56.0),
+                  title: Text('Two-line ListTile'),
+                  subtitle: Text('Here is a second line'),
+                  trailing: Icon(Icons.more_vert),
+                ),
+                ListTile(
+                  leading: FlutterLogo(size: 56.0),
+                  title: Text('Two-line ListTile'),
+                  subtitle: Text('Here is a second line'),
+                  trailing: Icon(Icons.more_vert),
+                ),
+                ListTile(
+                  leading: FlutterLogo(size: 56.0),
+                  title: Text('Two-line ListTile'),
+                  subtitle: Text('Here is a second line'),
+                  trailing: Icon(Icons.more_vert),
+                ),
+                ListTile(
+                  leading: FlutterLogo(size: 56.0),
+                  title: Text('Two-line ListTile'),
+                  subtitle: Text('Here is a second line'),
+                  trailing: Icon(Icons.more_vert),
+                ),
+                ListTile(
+                  leading: FlutterLogo(size: 56.0),
+                  title: Text('Two-line ListTile'),
+                  subtitle: Text('Here is a second line'),
+                  trailing: Icon(Icons.more_vert),
+                ),
+                ListTile(
+                  leading: FlutterLogo(size: 56.0),
+                  title: Text('Two-line ListTile'),
+                  subtitle: Text('Here is a second line'),
+                  trailing: Icon(Icons.more_vert),
+                ),
+              ])),
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: CNav(
+        iconSize: 30.0,
+        selectedColor: Colors.white,
+        unSelectedColor: Color(0xffacacac),
+        backgroundColor: Colors.black,
+        items: [
+          CNavItem(
+            icon: Icon(Icons.home),
+          ),
+          CNavItem(
+            icon: Icon(Icons.shopping_cart),
+          ),
+          CNavItem(
+            icon: Icon(Icons.lightbulb_outline),
+          ),
+          CNavItem(
+            icon: Icon(Icons.search),
+          ),
+        ],
+        onTap: (value) {
+          print(value);
+        },
       ),
     );
   }
