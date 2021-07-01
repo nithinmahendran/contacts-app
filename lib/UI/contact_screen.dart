@@ -1,6 +1,11 @@
-import 'package:cnav/cnav.dart';
+import 'package:contactsapp/UI/intro_screen.dart';
 import 'package:contactsapp/global.dart';
+import 'package:contactsapp/main.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ContactsScreen extends StatefulWidget {
   const ContactsScreen({Key? key}) : super(key: key);
@@ -139,50 +144,50 @@ class _ContactsScreenState extends State<ContactsScreen> {
               Expanded(
                   child: ListView(padding: EdgeInsets.only(top: 10), children: [
                 ListTile(
-                  leading: FlutterLogo(size: 56.0),
+                  leading:  Image.asset('assets/images/avatar.png'),
                   title: Text('Alexa Bezos',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('Assistant Professor'),
                   trailing: Icon(Icons.call),
                 ),
                 ListTile(
-                  leading: FlutterLogo(size: 56.0),
+                  leading:  Image.asset('assets/images/avatar.png'),
                   title: Text('Two-line ListTile'),
                   subtitle: Text('Here is a second line'),
                   trailing: Icon(Icons.more_vert),
                 ),
                 ListTile(
-                  leading: FlutterLogo(size: 56.0),
+                  leading:  Image.asset('assets/images/avatar.png'),
                   title: Text('Two-line ListTile'),
                   subtitle: Text('Here is a second line'),
                   trailing: Icon(Icons.more_vert),
                 ),
                 ListTile(
-                  leading: FlutterLogo(size: 56.0),
+                  leading:  Image.asset('assets/images/avatar.png'),
                   title: Text('Two-line ListTile'),
                   subtitle: Text('Here is a second line'),
                   trailing: Icon(Icons.more_vert),
                 ),
                 ListTile(
-                  leading: FlutterLogo(size: 56.0),
+                  leading: Image.asset('assets/images/avatar.png'),
                   title: Text('Two-line ListTile'),
                   subtitle: Text('Here is a second line'),
                   trailing: Icon(Icons.more_vert),
                 ),
                 ListTile(
-                  leading: FlutterLogo(size: 56.0),
+                  leading:  Image.asset('assets/images/avatar.png'),
                   title: Text('Two-line ListTile'),
                   subtitle: Text('Here is a second line'),
                   trailing: Icon(Icons.more_vert),
                 ),
                 ListTile(
-                  leading: FlutterLogo(size: 56.0),
+                  leading:  Image.asset('assets/images/avatar.png'),
                   title: Text('Two-line ListTile'),
                   subtitle: Text('Here is a second line'),
                   trailing: Icon(Icons.more_vert),
                 ),
                 ListTile(
-                  leading: FlutterLogo(size: 56.0),
+                  leading: Image.asset('assets/images/avatar.png'),
                   title: Text('Two-line ListTile'),
                   subtitle: Text('Here is a second line'),
                   trailing: Icon(Icons.more_vert),
@@ -192,28 +197,59 @@ class _ContactsScreenState extends State<ContactsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: CNav(
-        iconSize: 30.0,
-        selectedColor: Colors.white,
-        unSelectedColor: Color(0xffacacac),
-        backgroundColor: Colors.black,
-        items: [
-          CNavItem(
-            icon: Icon(Icons.home),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0),topRight:Radius.circular(30.0) ),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 20,
+              color: Colors.black.withOpacity(.1),
+            )
+          ],
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+            child: GNav(
+              backgroundColor: Colors.black,
+              rippleColor: Colors.grey[300]!,
+              hoverColor: Colors.grey[100]!,
+              gap: 8,
+              activeColor: Colors.black,
+              iconSize: 24,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              duration: Duration(milliseconds: 400),
+              tabBackgroundColor: Colors.white,
+              color: Colors.white,
+              tabs: [
+                GButton(
+                  icon: CupertinoIcons.person_2,
+                  text: 'Home',
+                ),
+                GButton(
+                  icon: CupertinoIcons.clock,
+                  text: 'Likes',
+                ),
+                GButton(
+                  icon: CupertinoIcons.star,
+                  text: 'Search',
+                ),
+                GButton(
+                  icon: CupertinoIcons.settings,
+                  text: 'Profile',
+                ),
+              ],
+              selectedIndex: _currentIndex,
+              onTabChange: (index) {
+                setState(() {
+                  _currentIndex = index;
+                  print(_currentIndex);
+                });
+              },
+            ),
           ),
-          CNavItem(
-            icon: Icon(Icons.shopping_cart),
-          ),
-          CNavItem(
-            icon: Icon(Icons.lightbulb_outline),
-          ),
-          CNavItem(
-            icon: Icon(Icons.search),
-          ),
-        ],
-        onTap: (value) {
-          print(value);
-        },
+        ),
       ),
     );
   }
