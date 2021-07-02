@@ -1,4 +1,5 @@
 import 'package:contactsapp/UI/intro_screen.dart';
+import 'package:contactsapp/UI/settings.dart';
 import 'package:contactsapp/global.dart';
 import 'package:contactsapp/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -144,26 +145,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
               Expanded(
                   child: ListView(padding: EdgeInsets.only(top: 10), children: [
                 ListTile(
-                  leading:  Image.asset('assets/images/avatar.png'),
+                  leading: Image.asset('assets/images/avatar.png'),
                   title: Text('Alexa Bezos',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('Assistant Professor'),
                   trailing: Icon(Icons.call),
                 ),
                 ListTile(
-                  leading:  Image.asset('assets/images/avatar.png'),
-                  title: Text('Two-line ListTile'),
-                  subtitle: Text('Here is a second line'),
-                  trailing: Icon(Icons.more_vert),
-                ),
-                ListTile(
-                  leading:  Image.asset('assets/images/avatar.png'),
-                  title: Text('Two-line ListTile'),
-                  subtitle: Text('Here is a second line'),
-                  trailing: Icon(Icons.more_vert),
-                ),
-                ListTile(
-                  leading:  Image.asset('assets/images/avatar.png'),
+                  leading: Image.asset('assets/images/avatar.png'),
                   title: Text('Two-line ListTile'),
                   subtitle: Text('Here is a second line'),
                   trailing: Icon(Icons.more_vert),
@@ -175,13 +164,25 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   trailing: Icon(Icons.more_vert),
                 ),
                 ListTile(
-                  leading:  Image.asset('assets/images/avatar.png'),
+                  leading: Image.asset('assets/images/avatar.png'),
                   title: Text('Two-line ListTile'),
                   subtitle: Text('Here is a second line'),
                   trailing: Icon(Icons.more_vert),
                 ),
                 ListTile(
-                  leading:  Image.asset('assets/images/avatar.png'),
+                  leading: Image.asset('assets/images/avatar.png'),
+                  title: Text('Two-line ListTile'),
+                  subtitle: Text('Here is a second line'),
+                  trailing: Icon(Icons.more_vert),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/images/avatar.png'),
+                  title: Text('Two-line ListTile'),
+                  subtitle: Text('Here is a second line'),
+                  trailing: Icon(Icons.more_vert),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/images/avatar.png'),
                   title: Text('Two-line ListTile'),
                   subtitle: Text('Here is a second line'),
                   trailing: Icon(Icons.more_vert),
@@ -200,7 +201,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.black,
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0),topRight:Radius.circular(30.0) ),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
           boxShadow: [
             BoxShadow(
               blurRadius: 20,
@@ -229,23 +231,24 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 ),
                 GButton(
                   icon: CupertinoIcons.clock,
-                  text: 'Likes',
+                  text: 'Recents',
                 ),
                 GButton(
                   icon: CupertinoIcons.star,
-                  text: 'Search',
+                  text: 'Favourites',
                 ),
                 GButton(
                   icon: CupertinoIcons.settings,
-                  text: 'Profile',
+                  text: 'Settings',
                 ),
               ],
               selectedIndex: _currentIndex,
               onTabChange: (index) {
                 setState(() {
                   _currentIndex = index;
-                  print(_currentIndex);
+                  print("${_currentIndex}NavBar");
                 });
+                
               },
             ),
           ),

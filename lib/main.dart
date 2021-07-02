@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:contactsapp/UI/contact_screen.dart';
 import 'package:contactsapp/UI/intro_screen.dart';
+import 'package:contactsapp/UI/settings.dart';
 import 'package:contactsapp/global.dart';
 import 'package:flutter/material.dart';
 
