@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: ContactsScreen());
+        home: SettingsScreen());
   }
 }
 

@@ -30,7 +30,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ListTile(
                 title: Text(
                   'Branch',
-                  style:settingsPage,
+                  style: settingsPage,
                 ),
                 trailing: Container(
                   margin: EdgeInsets.only(right: 10.0),
@@ -108,7 +108,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 visualDensity: VisualDensity.comfortable,
                 switchType: SwitchType.cupertino,
                 switchActiveColor: Colors.indigo,
-                title: Text('Dark Mode',style:settingsPage),
+                title: Text('Dark Mode', style: settingsPage),
               ),
               const Divider(
                 height: 15,
@@ -119,6 +119,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ListTileSwitch(
                 value: _value,
                 onChanged: (value) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => CustomDialog(
+                      
+                    ),
+                  );
+                  Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    elevation: 0.0,
+                    backgroundColor: Colors.transparent,
+                    child: dialogContent(context),
+                  );
+
                   setState(() {
                     _value = value;
                   });
@@ -126,7 +141,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 visualDensity: VisualDensity.comfortable,
                 switchType: SwitchType.cupertino,
                 switchActiveColor: Colors.indigo,
-                title: Text('Admin Mode',style:settingsPage,),
+                title: Text(
+                  'Admin Mode',
+                  style: settingsPage,
+                ),
               ),
               const Divider(
                 height: 15,
@@ -135,7 +153,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 endIndent: 16,
               ),
               ListTile(
-                title: Text('About',style:settingsPage,),
+                title: Text(
+                  'About',
+                  style: settingsPage,
+                ),
                 trailing: Padding(
                   padding: const EdgeInsets.only(right: 15.0),
                   child: Icon(
@@ -151,7 +172,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 endIndent: 16,
               ),
               ListTile(
-                title: Text('Contact Us',style:settingsPage,),
+                title: Text(
+                  'Contact Us',
+                  style: settingsPage,
+                ),
                 trailing: Padding(
                   padding: const EdgeInsets.only(right: 15.0),
                   child: Icon(
@@ -167,7 +191,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 endIndent: 16,
               ),
               ListTile(
-                title: Text('Website',style:settingsPage,),
+                title: Text(
+                  'Website',
+                  style: settingsPage,
+                ),
                 trailing: Padding(
                   padding: const EdgeInsets.only(right: 15.0),
                   child: Icon(
@@ -179,5 +206,129 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ),
         ));
+  }
+}
+
+dialogContent(BuildContext context) {
+  return Stack(
+    children: [
+      Container(
+        padding: EdgeInsets.only(
+          top: Consts.avatarRadius + Consts.padding,
+          bottom: Consts.padding,
+          left: Consts.padding,
+          right: Consts.padding,
+        ),
+        margin: EdgeInsets.only(top: Consts.avatarRadius),
+        decoration: new BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(Consts.padding),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10.0,
+              offset: const Offset(0.0, 10.0),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // To make the card compact
+          children: <Widget>[
+            Text(
+              "Admin Login",
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Container(
+              height: 52.0,
+              decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: const Color(0xffededed)),
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.0),
+                child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value!.isEmpty || value.length <= 5) {
+                      print("Nothing");
+                      return 'Invalid Password';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    print(value);
+                  },
+                  decoration: InputDecoration(
+                      fillColor: Color(0xffededed),
+                      hintText: 'Password',
+                      border: InputBorder.none,
+                      suffixIcon: Icon(
+                        CupertinoIcons.lock,
+                        color: Colors.black,
+                      )),
+                ),
+              ),
+            ),
+            SizedBox(height: 24.0),
+            Align(
+              alignment: Alignment.center,
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // To close the dialog
+                  },
+                  child: Text(
+                    "  Login  ",
+                    style: allBtns,
+                  )),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Text("Cancel")
+          ],
+        ),
+      ),
+      Positioned(
+          top: 10.0,
+          left: Consts.padding + 100,
+          right: Consts.padding + 100,
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.black, borderRadius: BorderRadius.circular(20.0)),
+            height: 100.0,
+            width: 100.0,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Image.asset('assets/images/adminlock.png', scale: 0.3),
+            ),
+          )),
+    ],
+  );
+}
+
+class Consts {
+  Consts._();
+
+  static const double padding = 16.0;
+  static const double avatarRadius = 66.0;
+}
+
+class CustomDialog extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Consts.padding),
+      ),
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
   }
 }
