@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:contactsapp/global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -125,14 +127,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       
                     ),
                   );
-                  Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    elevation: 0.0,
-                    backgroundColor: Colors.transparent,
-                    child: dialogContent(context),
-                  );
+              
 
                   setState(() {
                     _value = value;
@@ -322,13 +317,16 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Consts.padding),
+    return BackdropFilter(
+     filter: ImageFilter.blur(sigmaX:3.0,sigmaY:3.0),
+          child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Consts.padding),
+        ),
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        child: dialogContent(context),
       ),
-      elevation: 0.0,
-      backgroundColor: Colors.transparent,
-      child: dialogContent(context),
     );
   }
 }
