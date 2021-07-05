@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'package:contactsapp/UI/add_contact.dart';
 import 'package:contactsapp/UI/contact_screen.dart';
 import 'package:contactsapp/UI/intro_screen.dart';
 import 'package:contactsapp/UI/settings.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: ViewContact());
+        home: AddContact());
   }
 }
 
