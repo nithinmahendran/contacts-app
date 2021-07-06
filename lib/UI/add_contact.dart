@@ -50,8 +50,8 @@ class _AddContactState extends State<AddContact> {
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value!.isEmpty || !(value.contains('@'))) {
-                          return 'Invalid Email';
+                        if (value!.isEmpty ) {
+                          return 'Enter a Name';
                         }
                         return null;
                       },
@@ -73,8 +73,8 @@ class _AddContactState extends State<AddContact> {
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value!.isEmpty || !(value.contains('@'))) {
-                          return 'Invalid Email';
+                        if (value!.isEmpty ) {
+                          return 'Enter a department';
                         }
                         return null;
                       },
@@ -96,8 +96,8 @@ class _AddContactState extends State<AddContact> {
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value!.isEmpty || !(value.contains('@'))) {
-                          return 'Invalid Email';
+                        if (value!.isEmpty ) {
+                          return 'Enter a valid designation';
                         }
                         return null;
                       },
@@ -119,8 +119,8 @@ class _AddContactState extends State<AddContact> {
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value!.isEmpty || !(value.contains('@'))) {
-                          return 'Invalid Email';
+                        if (value!.isEmpty|| value.length<9) {
+                          return 'Enter a valid phone number';
                         }
                         return null;
                       },
