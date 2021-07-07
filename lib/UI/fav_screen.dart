@@ -1,11 +1,14 @@
+import 'package:contactsapp/UI/fav_selected.dart';
 import 'package:contactsapp/UI/intro_screen.dart';
 import 'package:contactsapp/UI/settings.dart';
 import 'package:contactsapp/global.dart';
 import 'package:contactsapp/main.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:badges/badges.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:english_words/english_words.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class FavScreen extends StatefulWidget {
@@ -19,9 +22,26 @@ class _FavScreenState extends State<FavScreen> {
   @override
   List<bool> isSelected = [false, false, false, false, false, false, false];
   Set<String> savedWords = Set<String>();
+  List<String> words = nouns.take(40).toList();
+ 
+
   int _currentIndex = 1;
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("widget.title"),
+        actions: <Widget>[
+          Badge(
+            badgeContent: Text('${savedWords.length}'),
+            toAnimate: false,
+            position: BadgePosition.topStart(top: 0),
+            child: IconButton(
+              icon: Icon(Icons.bookmark),
+              onPressed: () => pushToFavoriteWordsRoute(context),
+            ),
+          ),
+        ],
+      ),
       backgroundColor: Colors.white,
       body: Align(
         alignment: Alignment.center,
@@ -49,97 +69,34 @@ class _FavScreenState extends State<FavScreen> {
                     textAlign: TextAlign.start,
                   )),
               Expanded(
-                  child: ListView(padding: EdgeInsets.only(top: 10), children: [
-                ListTile(
-                  leading: Image.asset('assets/images/avatar.png'),
-                  title: Text('Alexa Bezos',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text('Assistant Professor'),
-                  trailing: StarButton(
-                    iconSize: 50.0,
-                    valueChanged: (_isStarred) {
-                      print('Is Favorite $_isStarred');
+                  child: ListView.builder(
+                padding: EdgeInsets.only(top: 10),
+                itemCount: words.length,
+                itemBuilder: (BuildContext context, int index) {
+                  String word = words[index];
+                  bool isSaved = savedWords.contains(word);
+                  return ListTile(
+                    leading: Image.asset('assets/images/avatar.png'),
+                    title: Text(word,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text(word),
+                    trailing: Icon(
+                      
+                      isSaved ? CupertinoIcons.star_fill : CupertinoIcons.star,
+                      color: isSaved ? Color(0xffffe500) : null,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        if (isSaved) {
+                          savedWords.remove(word);
+                        } else {
+                          savedWords.add(word);
+                        }
+                      });
                     },
-                  ),
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/avatar.png'),
-                  title: Text('Two-line ListTile'),
-                  subtitle: Text('Here is a second line'),
-                  trailing: StarButton(
-                    iconSize: 50.0,
-                    valueChanged: (_isStarred) {
-                      print('Is Favorite $_isStarred');
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/avatar.png'),
-                  title: Text('Two-line ListTile'),
-                  subtitle: Text('Here is a second line'),
-                  trailing: StarButton(
-                    iconSize: 50.0,
-                    valueChanged: (_isStarred) {
-                      print('Is Favorite $_isStarred');
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/avatar.png'),
-                  title: Text('Two-line ListTile'),
-                  subtitle: Text('Here is a second line'),
-                  trailing: StarButton(
-                    iconSize: 50.0,
-                    valueChanged: (_isStarred) {
-                      print('Is Favorite $_isStarred');
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/avatar.png'),
-                  title: Text('Two-line ListTile'),
-                  subtitle: Text('Here is a second line'),
-                  trailing: StarButton(
-                    iconSize: 50.0,
-                    valueChanged: (_isStarred) {
-                      print('Is Favorite $_isStarred');
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/avatar.png'),
-                  title: Text('Two-line ListTile'),
-                  subtitle: Text('Here is a second line'),
-                  trailing: StarButton(
-                    iconSize: 50.0,
-                    valueChanged: (_isStarred) {
-                      print('Is Favorite $_isStarred');
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/avatar.png'),
-                  title: Text('Two-line ListTile'),
-                  subtitle: Text('Here is a second line'),
-                  trailing: StarButton(
-                    iconSize: 50.0,
-                    valueChanged: (_isStarred) {
-                      print('Is Favorite $_isStarred');
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/avatar.png'),
-                  title: Text('Two-line ListTile'),
-                  subtitle: Text('Here is a second line'),
-                  trailing: StarButton(
-                    iconSize: 50.0,
-                    valueChanged: (_isStarred) {
-                      print('Is Favorite $_isStarred');
-                    },
-                  ),
-                ),
-              ])),
+                  );
+                },
+              )),
             ],
           ),
         ),
@@ -197,6 +154,15 @@ class _FavScreenState extends State<FavScreen> {
               },
             ),
           ),
+        ),
+      ),
+    );
+  }
+  Future pushToFavoriteWordsRoute(BuildContext context) {
+    return Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) => FavoriteWordsRoute(
+          favoriteItems: savedWords.toList(),
         ),
       ),
     );
