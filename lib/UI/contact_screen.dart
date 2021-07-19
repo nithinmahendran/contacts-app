@@ -1,3 +1,4 @@
+import 'package:contactsapp/UI/add_contact.dart';
 import 'package:contactsapp/UI/intro_screen.dart';
 import 'package:contactsapp/UI/settings.dart';
 import 'package:contactsapp/global.dart';
@@ -21,6 +22,12 @@ class _ContactsScreenState extends State<ContactsScreen> {
   int _currentIndex = 1;
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddContact()));
+        },
+      ),
       backgroundColor: Colors.white,
       body: Align(
         alignment: Alignment.center,
@@ -248,7 +255,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   _currentIndex = index;
                   print("${_currentIndex}NavBar");
                 });
-                
               },
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:contactsapp/global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class AddContact extends StatefulWidget {
   const AddContact({Key? key}) : super(key: key);
@@ -12,17 +12,41 @@ class AddContact extends StatefulWidget {
 
 class _AddContactState extends State<AddContact> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  String? contactName;
+  String? phone;
+  String? email;
+  String? designation;
+  String? department;
+  String? photo;
+  String? isFav;
+  String? deptId;
+
+  final _ref = FirebaseDatabase.instance.reference();
+  
+  
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
     _formKey.currentState!.save();
+    Map<String?,String?> contactData={
+    'name': contactName,
+    'phone': phone,
+    'email': email,
+    'designation': designation,
+    'department': department,
+    'photo': "",
+    'isFav': "",
+    'deptId': "null"
+  };
+    _ref.child("1").set(contactData);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,13 +74,13 @@ class _AddContactState extends State<AddContact> {
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value!.isEmpty ) {
+                        if (value!.isEmpty) {
                           return 'Enter a Name';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        print(value);
+                        contactName=value;
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
@@ -73,13 +97,13 @@ class _AddContactState extends State<AddContact> {
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value!.isEmpty ) {
+                        if (value!.isEmpty) {
                           return 'Enter a department';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        print(value);
+                        department=value;
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
@@ -96,13 +120,13 @@ class _AddContactState extends State<AddContact> {
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value!.isEmpty ) {
+                        if (value!.isEmpty) {
                           return 'Enter a valid designation';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        print(value);
+                        designation=value;
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
@@ -119,13 +143,13 @@ class _AddContactState extends State<AddContact> {
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value!.isEmpty|| value.length<9) {
+                        if (value!.isEmpty || value.length < 9) {
                           return 'Enter a valid phone number';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        print(value);
+                        phone=value;
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
@@ -148,7 +172,7 @@ class _AddContactState extends State<AddContact> {
                         return null;
                       },
                       onSaved: (value) {
-                        print(value);
+                        email=value;
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),

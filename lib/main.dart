@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:contactsapp/UI/add_contact.dart';
 import 'package:contactsapp/UI/contact_screen.dart';
@@ -27,16 +26,13 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              onPrimary: Colors.white,
-              primary: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)
-              )
-              
-            ),
+                onPrimary: Colors.white,
+                primary: Colors.black,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0))),
           ),
         ),
-        home: FavScreen());
+        home: ContactsScreen());
   }
 }
 
@@ -54,8 +50,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(
         Duration(seconds: 3),
-        () => Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => IntroScreen())));
+        () => Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => IntroScreen())));
   }
 
   @override
