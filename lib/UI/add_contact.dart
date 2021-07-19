@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:contactsapp/global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddContact extends StatefulWidget {
   const AddContact({Key? key}) : super(key: key);
@@ -20,26 +23,34 @@ class _AddContactState extends State<AddContact> {
   String? photo;
   String? isFav;
   String? deptId;
+  File? imageFile;
+  final picker = ImagePicker();
 
   final _ref = FirebaseDatabase.instance.reference();
-  
-  
+
+  chooseImage(ImageSource source) async {
+    final pickedFile = await picker.getImage(source: source);
+
+    setState(() {
+      imageFile = File(pickedFile!.path);
+    });
+  }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
     _formKey.currentState!.save();
-    Map<String?,String?> contactData={
-    'name': contactName,
-    'phone': phone,
-    'email': email,
-    'designation': designation,
-    'department': department,
-    'photo': "",
-    'isFav': "",
-    'deptId': "null"
-  };
+    Map<String?, String?> contactData = {
+      'name': contactName,
+      'phone': phone,
+      'email': email,
+      'designation': designation,
+      'department': department,
+      'photo': "",
+      'isFav': "",
+      'deptId': "null"
+    };
     _ref.child("1").set(contactData);
   }
 
@@ -53,11 +64,28 @@ class _AddContactState extends State<AddContact> {
           children: [
             Align(
               alignment: Alignment.center,
-              child: Container(
-                margin: EdgeInsets.only(top: 80.0),
-                height: 250.0,
-                child: Image.asset('assets/images/avatar.png'),
-              ),
+              child: imageFile != null
+                  ? Container(
+                      margin: EdgeInsets.only(top: 80.0),
+                      height: 250.0,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(image: FileImage(imageFile!))),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        chooseImage(ImageSource.gallery);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 80.0),
+                        height: 250.0,
+                        child: Image.asset('assets/images/avatar.png'),
+                      ),
+                    ),
+              // child: Container(
+              //   margin: EdgeInsets.only(top: 80.0),
+              //   height: 250.0,
+              //   child: Image.asset('assets/images/avatar.png'),
+              // ),
             ),
             SizedBox(
               height: 20.0,
@@ -80,7 +108,7 @@ class _AddContactState extends State<AddContact> {
                         return null;
                       },
                       onSaved: (value) {
-                        contactName=value;
+                        contactName = value;
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
@@ -103,7 +131,7 @@ class _AddContactState extends State<AddContact> {
                         return null;
                       },
                       onSaved: (value) {
-                        department=value;
+                        department = value;
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
@@ -126,7 +154,7 @@ class _AddContactState extends State<AddContact> {
                         return null;
                       },
                       onSaved: (value) {
-                        designation=value;
+                        designation = value;
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
@@ -149,7 +177,7 @@ class _AddContactState extends State<AddContact> {
                         return null;
                       },
                       onSaved: (value) {
-                        phone=value;
+                        phone = value;
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
@@ -172,7 +200,7 @@ class _AddContactState extends State<AddContact> {
                         return null;
                       },
                       onSaved: (value) {
-                        email=value;
+                        email = value;
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
