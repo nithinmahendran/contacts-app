@@ -101,61 +101,7 @@ class _FavScreenState extends State<FavScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 20,
-              color: Colors.black.withOpacity(.1),
-            )
-          ],
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-            child: GNav(
-              backgroundColor: Colors.black,
-              rippleColor: Colors.grey[300]!,
-              hoverColor: Colors.grey[100]!,
-              gap: 8,
-              activeColor: Colors.black,
-              iconSize: 24,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              duration: Duration(milliseconds: 400),
-              tabBackgroundColor: Colors.white,
-              color: Colors.white,
-              tabs: [
-                GButton(
-                  icon: CupertinoIcons.person_2,
-                  text: 'Home',
-                ),
-                GButton(
-                  icon: CupertinoIcons.clock,
-                  text: 'Recents',
-                ),
-                GButton(
-                  icon: CupertinoIcons.star,
-                  text: 'Favourites',
-                ),
-                GButton(
-                  icon: CupertinoIcons.settings,
-                  text: 'Settings',
-                ),
-              ],
-              selectedIndex: _currentIndex,
-              onTabChange: (index) {
-                setState(() {
-                  _currentIndex = index;
-                  print("${_currentIndex}NavBar");
-                });
-              },
-            ),
-          ),
-        ),
-      ),
+      
     );
   }
   Future pushToFavoriteWordsRoute(BuildContext context) {

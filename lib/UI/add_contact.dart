@@ -51,13 +51,30 @@ class _AddContactState extends State<AddContact> {
       'isFav': "",
       'deptId': "null"
     };
-    _ref.child("1").set(contactData);
+
+    _ref.child("ISE").push().set(contactData).then((_) {
+      print("Completed");
+    });
+
+    // _ref.child("1").set(contactData); updates the values in the database
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              CupertinoIcons.chevron_back,
+              color: Colors.black,
+            )),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,20 +82,38 @@ class _AddContactState extends State<AddContact> {
             Align(
               alignment: Alignment.center,
               child: imageFile != null
-                  ? Container(
-                      margin: EdgeInsets.only(top: 80.0),
-                      height: 250.0,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(image: FileImage(imageFile!))),
+                  ? InkWell(
+                      onTap: () {
+                        chooseImage(ImageSource.gallery);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 100.0, bottom: 20.0),
+                        height: 190.0,
+                        width: 190.0,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(30.0),
+                          child: FittedBox(
+                              fit: BoxFit.cover,
+                              clipBehavior: Clip.hardEdge,
+                              child: Image(
+                                  image: FileImage(
+                                imageFile!,
+                              ))),
+                        ),
+                      ),
                     )
                   : InkWell(
                       onTap: () {
                         chooseImage(ImageSource.gallery);
                       },
                       child: Container(
-                        margin: EdgeInsets.only(top: 80.0),
-                        height: 250.0,
-                        child: Image.asset('assets/images/avatar.png'),
+                        margin: EdgeInsets.only(top: 100.0, bottom: 50.0),
+                        height: 190.0,
+                        child: Image.asset('assets/images/addimage.png'),
                       ),
                     ),
               // child: Container(
@@ -93,7 +128,6 @@ class _AddContactState extends State<AddContact> {
             Padding(
               padding: const EdgeInsets.only(left: 50.0, right: 50.0),
               child: Form(
-                autovalidate: true,
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
