@@ -1,3 +1,4 @@
+import 'package:contactsapp/UI/edit_contact.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:ndialog/ndialog.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ContactsHome extends StatefulWidget {
@@ -23,12 +25,15 @@ class ContactsHome extends StatefulWidget {
 class _ContactsHomeState extends State<ContactsHome> {
   List<bool> isSelected = [false, false, false, false, false, false, false];
   Query? _ref;
+  DatabaseReference reference=FirebaseDatabase.instance.reference().child('Cse');
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _ref =
-        FirebaseDatabase.instance.reference().child('ISE').orderByChild('name');
+        FirebaseDatabase.instance.reference().child('Cse').orderByChild('name');
   }
 
   void readData() {
@@ -36,7 +41,6 @@ class _ContactsHomeState extends State<ContactsHome> {
         FirebaseDatabase.instance.reference().child('Cse').orderByChild('name');
     _ref!.once().then((DataSnapshot snapshot) {
       Map contact = snapshot.value;
-      print(contact[2]);
     });
   }
 
@@ -45,14 +49,79 @@ class _ContactsHomeState extends State<ContactsHome> {
       color: Colors.white,
       shadowColor: Colors.black,
       shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(15.0),
-  ),
-          child: ListTile(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: ListTile(
         leading: Image.asset('assets/images/avatar.png'),
         title: Text(contact!['name'],
             style: TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(contact['designation']),
-        trailing: Icon(Icons.call),
+        trailing: Wrap(
+          spacing: 20.0,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditContact(
+                              contactKey: contact['key'],
+                            )));
+              },
+              child: Container(
+                  height: 35.0,
+                  width: 35.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Color(0xfff1f1f1),
+                  ),
+                  child: Icon(
+                    Icons.edit_rounded,
+                    size: 24.0,
+                    color: Color(0xff666666),
+                  )),
+            ),
+            InkWell(
+              onTap: () async {
+                NAlertDialog( //Dialog Box
+                  blur: 2.0,
+                  dialogStyle: DialogStyle(titleDivider: true),
+                  title: Text("Delete Contact"),
+                  content: Text("Do you want to delete ${contact['name']} "),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text(
+                        "Delete",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      onPressed: () {
+                      reference.child(contact['key']).remove().whenComplete(() => Navigator.pop(context));
+                      },
+                    ),
+                    TextButton(
+                      child: Text("Cancel"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ).show(context);
+              },
+              child: Container(
+                  height: 35.0,
+                  width: 35.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Color(0xfff1f1f1),
+                  ),
+                  child: Icon(
+                    CupertinoIcons.trash,
+                    size: 23.0,
+                    color: Colors.red[600],
+                  )),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -185,8 +254,9 @@ class _ContactsHomeState extends State<ContactsHome> {
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
                       Map contact = snapshot.value;
-                      print("hi");
-                      print(contact);
+
+                      contact['key'] = snapshot.key;
+
                       return _buildContactItem(contact: contact);
                     })),
             // Expanded(

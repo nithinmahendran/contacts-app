@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddContact extends StatefulWidget {
-  const AddContact({Key? key}) : super(key: key);
+class EditContact extends StatefulWidget {
+  String? contactKey;
+  EditContact({this.contactKey});
 
   @override
-  _AddContactState createState() => _AddContactState();
+  _EditContactState createState() => _EditContactState();
 }
 
-class _AddContactState extends State<AddContact> {
+class _EditContactState extends State<EditContact> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   String? contactName;
   String? phone;
@@ -25,8 +26,20 @@ class _AddContactState extends State<AddContact> {
   String? deptId;
   File? imageFile;
   final picker = ImagePicker();
+  DatabaseReference? _ref;
 
-  final _ref = FirebaseDatabase.instance.reference();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _designationController = TextEditingController();
+  TextEditingController _departmentController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _ref = FirebaseDatabase.instance.reference().child('Cse');
+    getContactDetails();
+  }
 
   chooseImage(ImageSource source) async {
     final pickedFile = await picker.getImage(source: source);
@@ -41,7 +54,7 @@ class _AddContactState extends State<AddContact> {
       return;
     }
     _formKey.currentState!.save();
-    Map<String?, String?> contactData = {
+    Map<String, String?> contactData = {
       'name': contactName,
       'phone': phone,
       'email': email,
@@ -52,11 +65,23 @@ class _AddContactState extends State<AddContact> {
       'deptId': "null"
     };
 
-    _ref.child("Cse").push().set(contactData).then((_) {
+    _ref!.child(widget.contactKey!).update(contactData).then((_) {
       print("Completed");
     });
 
     // _ref.child("1").set(contactData); updates the values in the database
+  }
+
+  getContactDetails() async {
+    DataSnapshot snapshot = await _ref!.child(widget.contactKey!).once();
+    Map contact = snapshot.value;
+    _nameController.text = contact['name'];
+    _phoneController.text = contact['phone'];
+    _emailController.text = contact['email'];
+    _designationController.text = contact['designation'];
+    _departmentController.text = contact['department'];
+
+    print(contact['name']);
   }
 
   @override
@@ -134,6 +159,7 @@ class _AddContactState extends State<AddContact> {
                   children: [
                     Text("Name", style: sideHeaders),
                     TextFormField(
+                      controller: _nameController,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -147,7 +173,6 @@ class _AddContactState extends State<AddContact> {
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
                         isDense: true,
-                        hintText: 'Name',
                         border: InputBorder.none,
                       ),
                     ),
@@ -157,6 +182,7 @@ class _AddContactState extends State<AddContact> {
                     ),
                     Text("Department", style: sideHeaders),
                     TextFormField(
+                      controller: _departmentController,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -170,7 +196,6 @@ class _AddContactState extends State<AddContact> {
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
                         isDense: true,
-                        hintText: 'Department',
                         border: InputBorder.none,
                       ),
                     ),
@@ -180,6 +205,7 @@ class _AddContactState extends State<AddContact> {
                     ),
                     Text("Designation", style: sideHeaders),
                     TextFormField(
+                      controller: _designationController,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -192,7 +218,6 @@ class _AddContactState extends State<AddContact> {
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
-                        hintText: 'Designation',
                         isDense: true,
                         border: InputBorder.none,
                       ),
@@ -203,6 +228,7 @@ class _AddContactState extends State<AddContact> {
                     ),
                     Text("Phone", style: sideHeaders),
                     TextFormField(
+                      controller: _phoneController,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty || value.length < 9) {
@@ -215,7 +241,6 @@ class _AddContactState extends State<AddContact> {
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
-                        hintText: 'Phone',
                         isDense: true,
                         border: InputBorder.none,
                       ),
@@ -226,6 +251,7 @@ class _AddContactState extends State<AddContact> {
                     ),
                     Text("Email", style: sideHeaders),
                     TextFormField(
+                      controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty || !(value.contains('@'))) {
@@ -238,7 +264,6 @@ class _AddContactState extends State<AddContact> {
                       },
                       decoration: InputDecoration(
                         fillColor: Color(0xffededed),
-                        hintText: 'Email Address',
                         isDense: true,
                         border: InputBorder.none,
                       ),
