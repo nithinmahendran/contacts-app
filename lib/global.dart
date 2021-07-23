@@ -45,3 +45,10 @@ TextStyle settingsPage = TextStyle(fontSize: 19.0, fontWeight: FontWeight.w500);
 
 TextStyle cancelBtn =
     TextStyle(fontSize: 16.0, color: Colors.black, fontWeight: FontWeight.w400);
+
+
+
+TextStyle dialogDelete = TextStyle(
+    fontSize: 18.0,
+    color: Colors.black,
+    fontWeight: FontWeight.w400);

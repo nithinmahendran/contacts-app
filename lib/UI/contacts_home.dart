@@ -25,8 +25,8 @@ class ContactsHome extends StatefulWidget {
 class _ContactsHomeState extends State<ContactsHome> {
   List<bool> isSelected = [false, false, false, false, false, false, false];
   Query? _ref;
-  DatabaseReference reference=FirebaseDatabase.instance.reference().child('Cse');
-
+  DatabaseReference reference =
+      FirebaseDatabase.instance.reference().child('Cse');
 
   @override
   void initState() {
@@ -41,6 +41,7 @@ class _ContactsHomeState extends State<ContactsHome> {
         FirebaseDatabase.instance.reference().child('Cse').orderByChild('name');
     _ref!.once().then((DataSnapshot snapshot) {
       Map contact = snapshot.value;
+      print(contact);
     });
   }
 
@@ -83,27 +84,104 @@ class _ContactsHomeState extends State<ContactsHome> {
             ),
             InkWell(
               onTap: () async {
-                NAlertDialog( //Dialog Box
+                NAlertDialog(
+                  //Dialog Box
                   blur: 2.0,
                   dialogStyle: DialogStyle(titleDivider: true),
-                  title: Text("Delete Contact"),
-                  content: Text("Do you want to delete ${contact['name']} "),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text(
-                        "Delete",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      onPressed: () {
-                      reference.child(contact['key']).remove().whenComplete(() => Navigator.pop(context));
-                      },
+                  title: Padding(
+                    padding: const EdgeInsets.only(top: 12.0, left: 12.0),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 30.0,
+                          backgroundColor: Color(0xffF8F3F3),
+                          child: Icon(
+                            CupertinoIcons.trash,
+                            color: Colors.red,
+                            size: 30.0,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Text("Delete this contact?")
+                      ],
                     ),
-                    TextButton(
-                      child: Text("Cancel"),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    )
+                  ),
+                  content: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 4.0, left: 10.0, right: 10.0),
+                    child: Text(
+                      "Are you sure you want to remove ${contact['name']} from the directory?",
+                      textAlign: TextAlign.center,
+                      style: dialogDelete,
+                    ),
+                  ),
+                  actions: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 8.0, right: 20.0, bottom: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              reference
+                                  .child(contact['key'])
+                                  .remove()
+                                  .whenComplete(() => Navigator.pop(context));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Delete',
+                                style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 17.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // TextButton(
+                    //   child: Text(
+                    //     "Delete",
+                    //     style: TextStyle(color: Colors.red),
+                    //   ),
+                    //   onPressed: () {
+                    //     reference
+                    //         .child(contact['key'])
+                    //         .remove()
+                    //         .whenComplete(() => Navigator.pop(context));
+                    //   },
+                    // ),
+                    // TextButton(
+                    //   child: Text("Cancel"),
+                    //   onPressed: () {
+                    //     Navigator.pop(context);
+                    //   },
+                    // )
                   ],
                 ).show(context);
               },
@@ -141,10 +219,30 @@ class _ContactsHomeState extends State<ContactsHome> {
             Container(
               margin: EdgeInsets.only(top: 25.0),
               height: 40.0,
+              width: 400.0,
               decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(10.0),
                   color: const Color(0xffededed)),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12.0, left: 12.0),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: "Search",
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Icon(CupertinoIcons.search),
+                  )
+                ],
+              ),
             ),
             Container(
                 margin: EdgeInsets.only(top: 25.0, right: 270.0),
@@ -256,7 +354,7 @@ class _ContactsHomeState extends State<ContactsHome> {
                       Map contact = snapshot.value;
 
                       contact['key'] = snapshot.key;
-
+    
                       return _buildContactItem(contact: contact);
                     })),
             // Expanded(
