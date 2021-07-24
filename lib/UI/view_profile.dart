@@ -1,21 +1,83 @@
+import 'package:contactsapp/UI/edit_contact.dart';
 import 'package:contactsapp/global.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ViewContact extends StatefulWidget {
-  const ViewContact({Key? key}) : super(key: key);
+  String? contactKey;
+  ViewContact({this.contactKey});
 
   @override
   _ViewContactState createState() => _ViewContactState();
 }
 
 class _ViewContactState extends State<ViewContact> {
+  DatabaseReference? _ref;
+  String? contactName;
+  String? phone;
+  String? email;
+  String? designation;
+  String? department;
+  String? editKey;
+  @override
+  void initState() {
+    super.initState();
+    _ref = FirebaseDatabase.instance.reference().child('Cse');
+    getContactViewDetails();
+  }
+
+  void getContactViewDetails() async {
+    DataSnapshot snapshot = await _ref!.child(widget.contactKey!).once();
+    Map contact = snapshot.value;
+    contactName = contact['name'];
+    phone = contact['phone'];
+    email = contact['email'];
+    designation = contact['designation'];
+    department = contact['department'];
+    editKey = contact['key'];
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12.0),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditContact(
+                              contactKey: widget.contactKey!,
+                            )));
+              },
+              child: Icon(
+                Icons.edit_rounded,
+                size: 24.0,
+                color: Colors.black,
+              ),
+            ),
+          )
+        ],
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              CupertinoIcons.chevron_back,
+              color: Colors.black,
+            )),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
       body: SingleChildScrollView(
-              child: Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Align(
@@ -33,9 +95,9 @@ class _ViewContactState extends State<ViewContact> {
                 children: [
                   Column(
                     children: [
-                      Text("Alexa Bezoz",
+                      Text(contactName.toString(),
                           style: introScreen, textAlign: TextAlign.center),
-                      Text('+91 9902876487')
+                      Text(phone.toString())
                     ],
                   ),
                   Padding(
@@ -79,25 +141,25 @@ class _ViewContactState extends State<ViewContact> {
                     thickness: 1,
                   ),
                   Text("Department", style: sideHeaders),
-                  Text("Computer Science and Engineering"),
+                  Text(department.toString()),
                   const Divider(
                     height: 25,
                     thickness: 1,
                   ),
                   Text("Designation", style: sideHeaders),
-                  Text("Assistant Professor"),
+                  Text(designation.toString()),
                   const Divider(
                     height: 25,
                     thickness: 1,
                   ),
                   Text("Phone", style: sideHeaders),
-                  Text("+91 9902876487"),
+                  Text(phone.toString()),
                   const Divider(
                     height: 25,
                     thickness: 1,
                   ),
                   Text("Email", style: sideHeaders),
-                  Text("alexabezos@sample.com"),
+                  Text(email.toString()),
                   SizedBox(
                     height: 20.0,
                   )
