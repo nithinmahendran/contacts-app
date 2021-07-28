@@ -3,6 +3,7 @@ import 'package:contactsapp/global.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ViewContact extends StatefulWidget {
@@ -116,59 +117,68 @@ class _ViewContactState extends State<ViewContact> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Icon(CupertinoIcons.phone_fill, color: Colors.black),
-                Icon(
-                  CupertinoIcons.bubble_left_fill,
-                  color: Colors.black,
-                ),
-                FaIcon(
-                  FontAwesomeIcons.whatsapp,
-                  color: Colors.black,
-                ),
-                FaIcon(
-                  FontAwesomeIcons.solidEnvelope,
-                  color: Colors.black,
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 50.0, right: 50.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Divider(
-                    height: 25,
-                    thickness: 1,
-                  ),
-                  Text("Department", style: sideHeaders),
-                  Text(department.toString()),
-                  const Divider(
-                    height: 25,
-                    thickness: 1,
-                  ),
-                  Text("Designation", style: sideHeaders),
-                  Text(designation.toString()),
-                  const Divider(
-                    height: 25,
-                    thickness: 1,
-                  ),
-                  Text("Phone", style: sideHeaders),
-                  Text(phone.toString()),
-                  const Divider(
-                    height: 25,
-                    thickness: 1,
-                  ),
-                  Text("Email", style: sideHeaders),
-                  Text(email.toString()),
-                  SizedBox(
-                    height: 20.0,
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+                InkWell(
+                onTap:(){
+                _callNumber(phone.toString());
+                                },
+                                child: Icon(CupertinoIcons.phone_fill, color: Colors.black)),
+                                Icon(
+                                  CupertinoIcons.bubble_left_fill,
+                                  color: Colors.black,
+                                ),
+                                FaIcon(
+                                  FontAwesomeIcons.whatsapp,
+                                  color: Colors.black,
+                                ),
+                                FaIcon(
+                                  FontAwesomeIcons.solidEnvelope,
+                                  color: Colors.black,
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Divider(
+                                    height: 25,
+                                    thickness: 1,
+                                  ),
+                                  Text("Department", style: sideHeaders),
+                                  Text(department.toString()),
+                                  const Divider(
+                                    height: 25,
+                                    thickness: 1,
+                                  ),
+                                  Text("Designation", style: sideHeaders),
+                                  Text(designation.toString()),
+                                  const Divider(
+                                    height: 25,
+                                    thickness: 1,
+                                  ),
+                                  Text("Phone", style: sideHeaders),
+                                  Text(phone.toString()),
+                                  const Divider(
+                                    height: 25,
+                                    thickness: 1,
+                                  ),
+                                  Text("Email", style: sideHeaders),
+                                  Text(email.toString()),
+                                  SizedBox(
+                                    height: 20.0,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                }
+                
+                void _callNumber(phone) async{
+                var number = phone; //set the number here
+  bool? res = await FlutterPhoneDirectCaller.callNumber(number);
 }

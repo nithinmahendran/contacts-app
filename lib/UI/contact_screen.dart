@@ -2,6 +2,7 @@ import 'package:contactsapp/UI/add_contact.dart';
 import 'package:contactsapp/UI/contacts_home.dart';
 import 'package:contactsapp/UI/fav_screen.dart';
 import 'package:contactsapp/UI/intro_screen.dart';
+import 'package:contactsapp/UI/recents.dart';
 import 'package:contactsapp/UI/settings.dart';
 import 'package:contactsapp/UI/view_profile.dart';
 import 'package:contactsapp/global.dart';
@@ -23,9 +24,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
   @override
   List<bool> isSelected = [false, false, false, false, false, false, false];
   int _currentIndex = 0;
-  List<Widget> tabs=[
+  List<Widget> tabs = [
     ContactsHome(),
-    FavScreen(),
+    RecentsScreen(),
     AddContact(),
     ViewContact()
   ];
@@ -88,7 +89,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
               onTabChange: (index) {
                 setState(() {
                   _currentIndex = index;
-                  
+
                   print("${_currentIndex}NavBar");
                 });
               },
@@ -98,6 +99,4 @@ class _ContactsScreenState extends State<ContactsScreen> {
       ),
     );
   }
-
- 
 }
