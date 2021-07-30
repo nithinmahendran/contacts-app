@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:contactsapp/global.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:path/path.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddContact extends StatefulWidget {
@@ -26,6 +30,9 @@ class _AddContactState extends State<AddContact> {
   File? imageFile;
   final picker = ImagePicker();
 
+  Timer? _timer;
+  late double _progress;
+
   final _ref = FirebaseDatabase.instance.reference();
 
   chooseImage(ImageSource source) async {
@@ -33,30 +40,69 @@ class _AddContactState extends State<AddContact> {
 
     setState(() {
       imageFile = File(pickedFile!.path);
+      print("Image path $imageFile");
     });
+    
   }
 
-  Future<void> _submit() async {
+  // Future uploadPic(BuildContext context) async {
+
+  // }
+  
+
+  Future<void> _submit(context) async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
     _formKey.currentState!.save();
+    String fileName = basename(imageFile!.path);
+    Reference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child(fileName);
+    UploadTask uploadTask = firebaseStorageRef.putFile(imageFile!);
+  EasyLoading.show(status: "Uploading");
+    TaskSnapshot taskSnapshot =
+        await uploadTask.whenComplete(() => EasyLoading.showSuccess('Great Success!'));
+   
+    final String photo = await taskSnapshot.ref.getDownloadURL();
+   
+    // setState(() {
+      
+    //   print("Profile Picture uploaded");
+    //   Scaffold.of(context)
+    //       .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
+    // });
+    
     Map<String?, String?> contactData = {
       'name': contactName,
       'phone': phone,
       'email': email,
       'designation': designation,
       'department': department,
-      'photo': "",
+      'photo': photo,
       'isFav': "",
       'deptId': "null"
     };
 
     _ref.child("Cse").push().set(contactData).then((_) {
       print("Completed");
+      EasyLoading.dismiss();
     });
 
+    Navigator.pop(context);
+
     // _ref.child("1").set(contactData); updates the values in the database
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    EasyLoading.addStatusCallback((status) {
+      print('EasyLoading Status $status');
+      if (status == EasyLoadingStatus.dismiss) {
+        _timer?.cancel();
+      }
+    });
   }
 
   @override
@@ -251,8 +297,9 @@ class _AddContactState extends State<AddContact> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            _submit();
-                            Navigator.pop(context);
+                            _submit(context);
+                            
+                            
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
