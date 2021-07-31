@@ -27,19 +27,19 @@ class _ContactsHomeState extends State<ContactsHome> {
   List<bool> isSelected = [false, false, false, false, false, false, false];
   Query? _ref;
   DatabaseReference reference =
-      FirebaseDatabase.instance.reference().child('Cse');
+      FirebaseDatabase.instance.reference().child('CSE');
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _ref =
-        FirebaseDatabase.instance.reference().child('Cse').orderByChild('name');
+        FirebaseDatabase.instance.reference().child('CSE').orderByChild('name');
   }
 
   void readData() {
     _ref =
-        FirebaseDatabase.instance.reference().child('Cse').orderByChild('name');
+        FirebaseDatabase.instance.reference().child('CSE').orderByChild('name');
     _ref!.once().then((DataSnapshot snapshot) {
       Map contact = snapshot.value;
       print(contact);

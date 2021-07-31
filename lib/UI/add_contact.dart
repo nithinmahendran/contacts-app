@@ -33,7 +33,7 @@ class _AddContactState extends State<AddContact> {
   Timer? _timer;
   late double _progress;
 
-  final _ref = FirebaseDatabase.instance.reference();
+  final _ref = FirebaseDatabase.instance.reference().child("CSE");
 
   chooseImage(ImageSource source) async {
     final pickedFile = await picker.getImage(source: source);
@@ -42,13 +42,11 @@ class _AddContactState extends State<AddContact> {
       imageFile = File(pickedFile!.path);
       print("Image path $imageFile");
     });
-    
   }
 
   // Future uploadPic(BuildContext context) async {
 
   // }
-  
 
   Future<void> _submit(context) async {
     if (!_formKey.currentState!.validate()) {
@@ -59,19 +57,19 @@ class _AddContactState extends State<AddContact> {
     Reference firebaseStorageRef =
         FirebaseStorage.instance.ref().child(fileName);
     UploadTask uploadTask = firebaseStorageRef.putFile(imageFile!);
-  EasyLoading.show(status: "Uploading");
-    TaskSnapshot taskSnapshot =
-        await uploadTask.whenComplete(() => EasyLoading.showSuccess('Great Success!'));
-   
+    EasyLoading.show(status: "Uploading");
+    TaskSnapshot taskSnapshot = await uploadTask
+        .whenComplete(() => EasyLoading.showSuccess('Great Success!'));
+
     final String photo = await taskSnapshot.ref.getDownloadURL();
-   
+
     // setState(() {
-      
+
     //   print("Profile Picture uploaded");
     //   Scaffold.of(context)
     //       .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
     // });
-    
+
     Map<String?, String?> contactData = {
       'name': contactName,
       'phone': phone,
@@ -83,7 +81,7 @@ class _AddContactState extends State<AddContact> {
       'deptId': "null"
     };
 
-    _ref.child("Cse").push().set(contactData).then((_) {
+    _ref.push().set(contactData).then((_) {
       print("Completed");
       EasyLoading.dismiss();
     });
@@ -298,8 +296,6 @@ class _AddContactState extends State<AddContact> {
                         ElevatedButton(
                           onPressed: () {
                             _submit(context);
-                            
-                            
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
