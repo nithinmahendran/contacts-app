@@ -37,7 +37,7 @@ class _EditContactState extends State<EditContact> {
   @override
   void initState() {
     super.initState();
-    _ref = FirebaseDatabase.instance.reference().child('Cse');
+    _ref = FirebaseDatabase.instance.reference().child('CSE');
     getContactDetails();
   }
 

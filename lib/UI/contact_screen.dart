@@ -27,18 +27,15 @@ class _ContactsScreenState extends State<ContactsScreen> {
   List<Widget> tabs = [
     ContactsHome(),
     RecentsScreen(),
-    AddContact(),
-    ViewContact()
+    FavScreen(),
+    SettingsScreen()
+    
   ];
 
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddContact()));
-        },
-      ),
+      
+      
       backgroundColor: Colors.white,
       body: tabs[_currentIndex],
       bottomNavigationBar: Container(

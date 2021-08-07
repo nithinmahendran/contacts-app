@@ -4,7 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:contactsapp/UI/add_contact.dart';
-import 'package:contactsapp/UI/fav_screen.dart';
+
 import 'package:contactsapp/UI/intro_screen.dart';
 import 'package:contactsapp/UI/settings.dart';
 import 'package:contactsapp/global.dart';
@@ -42,29 +42,32 @@ class _ContactsHomeState extends State<ContactsHome> {
         FirebaseDatabase.instance.reference().child('CSE').orderByChild('name');
     _ref!.once().then((DataSnapshot snapshot) {
       Map contact = snapshot.value;
-      print(contact);
+      
     });
   }
 
   Widget _buildContactItem({Map? contact}) {
+    String? image = contact!['photo'];
     return InkWell(
-      onTap:(){
+      onTap: () {
         Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ViewContact(
-                                contactKey: contact!['key'],
-                              )));
+            context,
+            MaterialPageRoute(
+                builder: (context) => ViewContact(
+                      contactKey: contact['key'],
+                    )));
       },
-          child: Card(
+      child: Card(
         color: Colors.white,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: ListTile(
-          leading: Image.asset('assets/images/avatar.png'),
-          title: Text(contact!['name'],
+          leading: image != null
+              ? Image.network(contact['photo'])
+              : Image.asset('assets/images/avatar.png'),
+          title: Text(contact['name'],
               style: TextStyle(fontWeight: FontWeight.bold)),
           subtitle: Text(contact['designation']),
           trailing: Wrap(
@@ -174,24 +177,7 @@ class _ContactsHomeState extends State<ContactsHome> {
                           ],
                         ),
                       ),
-                      // TextButton(
-                      //   child: Text(
-                      //     "Delete",
-                      //     style: TextStyle(color: Colors.red),
-                      //   ),
-                      //   onPressed: () {
-                      //     reference
-                      //         .child(contact['key'])
-                      //         .remove()
-                      //         .whenComplete(() => Navigator.pop(context));
-                      //   },
-                      // ),
-                      // TextButton(
-                      //   child: Text("Cancel"),
-                      //   onPressed: () {
-                      //     Navigator.pop(context);
-                      //   },
-                      // )
+                      
                     ],
                   ).show(context);
                 },
@@ -334,6 +320,7 @@ class _ContactsHomeState extends State<ContactsHome> {
                                   indexBtn++) {
                                 if (indexBtn == index) {
                                   print(index);
+
                                   isSelected[indexBtn] = !isSelected[indexBtn];
                                 } else {
                                   isSelected[indexBtn] = false;
@@ -343,10 +330,6 @@ class _ContactsHomeState extends State<ContactsHome> {
                           }),
                     ),
                   )
-
-                  // color: pressAttention! ? Colors.grey : Colors.blue,
-                  // onPressed: () =>
-                  //     setState(() => pressAttention = !pressAttention!),
                 ],
               ),
             ),
@@ -363,63 +346,11 @@ class _ContactsHomeState extends State<ContactsHome> {
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
                       Map contact = snapshot.value;
-
+                      
                       contact['key'] = snapshot.key;
-    
+                     
                       return _buildContactItem(contact: contact);
                     })),
-            // Expanded(
-            //     child: ListView(padding: EdgeInsets.only(top: 10), children: [
-            //   ListTile(
-            //     leading: Image.asset('assets/images/avatar.png'),
-            //     title: Text('Alexa Bezos',
-            //         style: TextStyle(fontWeight: FontWeight.bold)),
-            //     subtitle: Text('Assistant Professor'),
-            //     trailing: Icon(Icons.call),
-            //   ),
-            //   ListTile(
-            //     leading: Image.asset('assets/images/avatar.png'),
-            //     title: Text('Two-line ListTile'),
-            //     subtitle: Text('Here is a second line'),
-            //     trailing: Icon(Icons.more_vert),
-            //   ),
-            //   ListTile(
-            //     leading: Image.asset('assets/images/avatar.png'),
-            //     title: Text('Two-line ListTile'),
-            //     subtitle: Text('Here is a second line'),
-            //     trailing: Icon(Icons.more_vert),
-            //   ),
-            //   ListTile(
-            //     leading: Image.asset('assets/images/avatar.png'),
-            //     title: Text('Two-line ListTile'),
-            //     subtitle: Text('Here is a second line'),
-            //     trailing: Icon(Icons.more_vert),
-            //   ),
-            //   ListTile(
-            //     leading: Image.asset('assets/images/avatar.png'),
-            //     title: Text('Two-line ListTile'),
-            //     subtitle: Text('Here is a second line'),
-            //     trailing: Icon(Icons.more_vert),
-            //   ),
-            //   ListTile(
-            //     leading: Image.asset('assets/images/avatar.png'),
-            //     title: Text('Two-line ListTile'),
-            //     subtitle: Text('Here is a second line'),
-            //     trailing: Icon(Icons.more_vert),
-            //   ),
-            //   ListTile(
-            //     leading: Image.asset('assets/images/avatar.png'),
-            //     title: Text('Two-line ListTile'),
-            //     subtitle: Text('Here is a second line'),
-            //     trailing: Icon(Icons.more_vert),
-            //   ),
-            //   ListTile(
-            //     leading: Image.asset('assets/images/avatar.png'),
-            //     title: Text('Two-line ListTile'),
-            //     subtitle: Text('Here is a second line'),
-            //     trailing: Icon(Icons.more_vert),
-            //   ),
-            // ])),
           ],
         ),
       ),

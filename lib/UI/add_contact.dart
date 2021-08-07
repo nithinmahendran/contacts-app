@@ -82,7 +82,7 @@ class _AddContactState extends State<AddContact> {
     };
 
     _ref.push().set(contactData).then((_) {
-      print("Completed");
+      print("Completed Adding Contact");
       EasyLoading.dismiss();
     });
 
