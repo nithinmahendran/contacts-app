@@ -1,5 +1,7 @@
 import 'package:contactsapp/UI/edit_contact.dart';
 import 'package:contactsapp/UI/view_profile.dart';
+import 'package:contactsapp/models/user_model.dart';
+import 'package:contactsapp/services/auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +14,11 @@ import 'package:contactsapp/main.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 class ContactsHome extends StatefulWidget {
   const ContactsHome({Key? key}) : super(key: key);
@@ -42,11 +46,32 @@ class _ContactsHomeState extends State<ContactsHome> {
         FirebaseDatabase.instance.reference().child('CSE').orderByChild('name');
     _ref!.once().then((DataSnapshot snapshot) {
       Map contact = snapshot.value;
-      
     });
   }
 
-  Widget _buildContactItem({Map? contact}) {
+  Widget _buildItem({Map? contact}) {
+    final authService = Provider.of<AuthService>(context);
+
+    return StreamBuilder<User?>(
+      stream: authService.user,
+      builder: (_, AsyncSnapshot<User?> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final User? user = snapshot.data;
+          //print("${user!.email} \n\n\n\n\n\n");
+          return user == null
+              ? _buildContactList(contact)
+              : _buildAdminContactList(contact);
+        } else {
+          return Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+      },
+    );
+  }
+
+// unecessary widget used refer fav screen for shorter code implementation
+  Widget _buildAdminContactList(contact) {
     String? image = contact!['photo'];
     return InkWell(
       onTap: () {
@@ -177,7 +202,6 @@ class _ContactsHomeState extends State<ContactsHome> {
                           ],
                         ),
                       ),
-                      
                     ],
                   ).show(context);
                 },
@@ -197,6 +221,52 @@ class _ContactsHomeState extends State<ContactsHome> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildContactList(contact) {
+    String? image = contact!['photo'];
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ViewContact(
+                      contactKey: contact['key'],
+                    )));
+      },
+      child: Card(
+        color: Colors.white,
+        shadowColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: ListTile(
+            leading: image != null
+                ? Image.network(contact['photo'])
+                : Image.asset('assets/images/avatar.png'),
+            title: Text(contact['name'],
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(contact['designation']),
+            trailing: InkWell(
+              onTap: () async {
+                var number = contact['phone']; //set the number here
+                bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+              },
+              child: Container(
+                  height: 35.0,
+                  width: 35.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Color(0xffB9FFB8),
+                  ),
+                  child: Icon(
+                    CupertinoIcons.phone_fill,
+                    size: 24.0,
+                    color: Colors.black,
+                  )),
+            )),
       ),
     );
   }
@@ -346,10 +416,10 @@ class _ContactsHomeState extends State<ContactsHome> {
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
                       Map contact = snapshot.value;
-                      
+
                       contact['key'] = snapshot.key;
-                     
-                      return _buildContactItem(contact: contact);
+
+                      return _buildItem(contact: contact);
                     })),
           ],
         ),

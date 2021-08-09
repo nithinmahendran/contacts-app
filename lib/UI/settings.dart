@@ -1,9 +1,12 @@
 import 'dart:ui';
 
 import 'package:contactsapp/global.dart';
+import 'package:contactsapp/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
+import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -14,9 +17,12 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _value = true;
+
   String? _chosenValue;
+
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
@@ -120,15 +126,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ListTileSwitch(
                 value: _value,
-                onChanged: (value) {
+                onChanged: (value) async {
                   showDialog(
                     context: context,
-                    builder: (BuildContext context) => CustomDialog(
-                      
-                    ),
+                    builder: (BuildContext context) => CustomDialog(),
                   );
-              
 
+                  if (value == false) {
+                    await authService
+                        .signOut()
+                        .then((value) => print("Logged out"));
+                  }
                   setState(() {
                     _value = value;
                   });
@@ -205,6 +213,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 }
 
 dialogContent(BuildContext context) {
+  TextEditingController _adminCred = TextEditingController();
+  final authService = Provider.of<AuthService>(context);
   return Stack(
     children: [
       Container(
@@ -247,6 +257,7 @@ dialogContent(BuildContext context) {
               child: Padding(
                 padding: EdgeInsets.only(left: 20.0),
                 child: TextFormField(
+                  controller: _adminCred,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty || value.length <= 5) {
@@ -255,9 +266,9 @@ dialogContent(BuildContext context) {
                     }
                     return null;
                   },
-                  onSaved: (value) {
-                    print(value);
-                  },
+                  // onSaved: (value) {
+                  //   print(value);
+                  // },
                   decoration: InputDecoration(
                       fillColor: Color(0xffededed),
                       hintText: 'Password',
@@ -273,7 +284,12 @@ dialogContent(BuildContext context) {
             Align(
               alignment: Alignment.center,
               child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await authService
+                        .signInWithEmailAndPassword(
+                            "abc@gmail.com", _adminCred.text)
+                        .then((value) => print("Logged in"));
+
                     Navigator.of(context).pop(); // To close the dialog
                   },
                   child: Text(
@@ -314,12 +330,11 @@ class Consts {
 }
 
 class CustomDialog extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return BackdropFilter(
-     filter: ImageFilter.blur(sigmaX:3.0,sigmaY:3.0),
-          child: Dialog(
+      filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+      child: Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Consts.padding),
         ),

@@ -1,5 +1,6 @@
 import 'package:contactsapp/UI/edit_contact.dart';
 import 'package:contactsapp/UI/view_profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class _FavScreenState extends State<FavScreen> {
           title: Text(contact['name'],
               style: TextStyle(fontWeight: FontWeight.bold)),
           subtitle: Text(contact['designation']),
-          trailing: Wrap(
+          trailing: FirebaseAuth.instance.currentUser !=null ?Wrap(
             spacing: 20.0,
             children: [
               InkWell(
@@ -184,7 +185,7 @@ class _FavScreenState extends State<FavScreen> {
                     )),
               )
             ],
-          ),
+          ):Icon(CupertinoIcons.star_fill,color: Colors.yellow,),
         ),
       ),
     );
