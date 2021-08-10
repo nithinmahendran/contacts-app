@@ -17,7 +17,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _value = true;
-
+  
   String? _chosenValue;
 
   @override
@@ -125,13 +125,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 endIndent: 16,
               ),
               ListTileSwitch(
-                value: _value,
+                value: FirebaseAuth.instance.currentUser != null ? true : false,
                 onChanged: (value) async {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) => CustomDialog(),
-                  );
-
+                  if (FirebaseAuth.instance.currentUser == null) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => CustomDialog(),
+                    );
+                  }
                   if (value == false) {
                     await authService
                         .signOut()

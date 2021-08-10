@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0))),
             ),
           ),
-          home: ContactsScreen()),
+          home: SplashScreen()),
     );
   }
 }

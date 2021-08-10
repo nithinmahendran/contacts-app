@@ -1,3 +1,4 @@
+import 'package:contactsapp/UI/contact_screen.dart';
 import 'package:contactsapp/global.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -171,10 +172,9 @@ class _IntroScreenState extends State<IntroScreen> {
                       'Information Science & Engineering',
                       'Mechanical Engineering',
                       'Electronics & Communications Engineering'
-                      'Civil Engineering',
+                          'Civil Engineering',
                       'Artifical Intelligence',
                       'Data Science',
-      
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -210,7 +210,10 @@ class _IntroScreenState extends State<IntroScreen> {
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => ContactsScreen()));
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Text(
