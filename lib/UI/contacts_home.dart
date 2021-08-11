@@ -588,6 +588,9 @@ class _ContactsHomeState extends State<ContactsHome> {
                 )),
             Expanded(
                 child: FirebaseAnimatedList(
+                    defaultChild: Center(child: CircularProgressIndicator(
+                      color:Colors.black
+                    )),
                     query: _ref!,
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {

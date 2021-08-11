@@ -171,8 +171,8 @@ class _IntroScreenState extends State<IntroScreen> {
                       'Computer Science & Engineering',
                       'Information Science & Engineering',
                       'Mechanical Engineering',
-                      'Electronics & Communications Engineering'
-                          'Civil Engineering',
+                      'Electronics & Communications Engineering',
+                      'Civil Engineering',
                       'Artifical Intelligence',
                       'Data Science',
                     ].map<DropdownMenuItem<String>>((String value) {
@@ -198,6 +198,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     onChanged: (String? value) {
                       setState(() {
                         _chosenValue = value;
+                        print(value);
                       });
                     },
                   ),
@@ -211,8 +212,10 @@ class _IntroScreenState extends State<IntroScreen> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => ContactsScreen()));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ContactsScreen()));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
