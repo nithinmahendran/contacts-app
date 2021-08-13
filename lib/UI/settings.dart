@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -17,8 +18,13 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _value = true;
-  
+
   String? _chosenValue;
+
+  final adminLoggedOut = SnackBar(
+    content: const Text('Admin Logged Out'),
+    backgroundColor: Colors.black,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -134,10 +140,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     );
                   }
                   if (value == false) {
-                    await authService
-                        .signOut()
-                        .then((value) => print("Logged out"));
+                    await authService.signOut().then((value) =>
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(adminLoggedOut));
                   }
+
                   setState(() {
                     _value = value;
                   });
@@ -194,16 +201,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 indent: 16,
                 endIndent: 16,
               ),
-              ListTile(
-                title: Text(
-                  'Website',
-                  style: settingsPage,
-                ),
-                trailing: Padding(
-                  padding: const EdgeInsets.only(right: 15.0),
-                  child: Icon(
-                    CupertinoIcons.square_arrow_right,
-                    color: Colors.black,
+              InkWell(
+                onTap: () async {
+                  const url = 'https://www.sahyadri.edu.in/';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                child: ListTile(
+                  title: Text(
+                    'Website',
+                    style: settingsPage,
+                  ),
+                  trailing: Padding(
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: Icon(
+                      CupertinoIcons.square_arrow_right,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
@@ -286,10 +303,15 @@ dialogContent(BuildContext context) {
               alignment: Alignment.center,
               child: ElevatedButton(
                   onPressed: () async {
+                    final adminLogged = SnackBar(
+                      content: const Text('Admin Logged In'),
+                      backgroundColor: Colors.black,
+                    );
                     await authService
                         .signInWithEmailAndPassword(
                             "abc@gmail.com", _adminCred.text)
-                        .then((value) => print("Logged in"));
+                        .then((value) => ScaffoldMessenger.of(context)
+                            .showSnackBar(adminLogged));
 
                     Navigator.of(context).pop(); // To close the dialog
                   },

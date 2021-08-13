@@ -27,7 +27,10 @@ class _EditContactState extends State<EditContact> {
   File? imageFile;
   final picker = ImagePicker();
   DatabaseReference? _ref;
-
+final snackBarEdit = SnackBar(
+    content: const Text('Edited Contact Successfully'),
+    backgroundColor: Colors.black,
+  );
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -68,6 +71,7 @@ class _EditContactState extends State<EditContact> {
     _ref!.child(widget.contactKey!).update(contactData).then((_) {
       print("Completed");
     });
+     ScaffoldMessenger.of(context).showSnackBar(snackBarEdit);
 
     // _ref.child("1").set(contactData); updates the values in the database
   }

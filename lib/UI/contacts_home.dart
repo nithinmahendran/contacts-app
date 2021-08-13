@@ -217,7 +217,7 @@ class _ContactsHomeState extends State<ContactsHome> {
                           color: Color(0xffB9FFB8),
                         ),
                         child: Icon(
-                          CupertinoIcons.phone_fill,
+                          Icons.phone,
                           size: 24.0,
                           color: Colors.black,
                         )),
@@ -588,9 +588,8 @@ class _ContactsHomeState extends State<ContactsHome> {
                 )),
             Expanded(
                 child: FirebaseAnimatedList(
-                    defaultChild: Center(child: CircularProgressIndicator(
-                      color:Colors.black
-                    )),
+                    defaultChild: Center(
+                        child: CircularProgressIndicator(color: Colors.black)),
                     query: _ref!,
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {

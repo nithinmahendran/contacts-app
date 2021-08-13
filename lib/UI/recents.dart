@@ -41,7 +41,7 @@ class _RecentsScreenState extends State<RecentsScreen>
       });
     }
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Align(

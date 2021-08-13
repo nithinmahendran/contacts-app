@@ -34,7 +34,11 @@ class _FavScreenState extends State<FavScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _ref = FirebaseDatabase.instance.reference().child('FAVS').orderByChild('name');
+    _ref = FirebaseDatabase.instance
+        .reference()
+        .child('FAVS')
+        .orderByChild('name');
+    
   }
 
   Widget _buildContactItem({Map? contact}) {
@@ -61,131 +65,138 @@ class _FavScreenState extends State<FavScreen> {
           title: Text(contact['name'],
               style: TextStyle(fontWeight: FontWeight.bold)),
           subtitle: Text(contact['designation']),
-          trailing: FirebaseAuth.instance.currentUser !=null ?Wrap(
-            spacing: 20.0,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditContact(
-                                contactKey: contact['key'],
-                              )));
-                },
-                child: Container(
-                    height: 35.0,
-                    width: 35.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Color(0xfff1f1f1),
-                    ),
-                    child: Icon(
-                      Icons.edit_rounded,
-                      size: 24.0,
-                      color: Color(0xff666666),
-                    )),
-              ),
-              InkWell(
-                onTap: () async {
-                  NAlertDialog(
-                    //Dialog Box
-                    blur: 2.0,
-                    dialogStyle: DialogStyle(titleDivider: true),
-                    title: Padding(
-                      padding: const EdgeInsets.only(top: 12.0, left: 12.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 30.0,
-                            backgroundColor: Color(0xffF8F3F3),
-                            child: Icon(
-                              CupertinoIcons.trash,
-                              color: Colors.red,
-                              size: 30.0,
-                            ),
+          trailing: FirebaseAuth.instance.currentUser != null
+              ? Wrap(
+                  spacing: 20.0,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditContact(
+                                      contactKey: contact['key'],
+                                    )));
+                      },
+                      child: Container(
+                          height: 35.0,
+                          width: 35.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: Color(0xfff1f1f1),
                           ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          Text("Delete this contact?")
-                        ],
-                      ),
+                          child: Icon(
+                            Icons.edit_rounded,
+                            size: 24.0,
+                            color: Color(0xff666666),
+                          )),
                     ),
-                    content: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 4.0, left: 10.0, right: 10.0),
-                      child: Text(
-                        "Are you sure you want to remove ${contact['name']} from the directory?",
-                        textAlign: TextAlign.center,
-                        style: dialogDelete,
-                      ),
-                    ),
-                    actions: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8.0, right: 20.0, bottom: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'Cancel',
-                                style: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                reference
-                                    .child(contact['key'])
-                                    .remove()
-                                    .whenComplete(() => Navigator.pop(context));
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.red,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Delete',
-                                  style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontSize: 17.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500),
+                    InkWell(
+                      onTap: () async {
+                        NAlertDialog(
+                          //Dialog Box
+                          blur: 2.0,
+                          dialogStyle: DialogStyle(titleDivider: true),
+                          title: Padding(
+                            padding:
+                                const EdgeInsets.only(top: 12.0, left: 12.0),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 30.0,
+                                  backgroundColor: Color(0xffF8F3F3),
+                                  child: Icon(
+                                    CupertinoIcons.trash,
+                                    color: Colors.red,
+                                    size: 30.0,
+                                  ),
                                 ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text("Delete this contact?")
+                              ],
+                            ),
+                          ),
+                          content: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 4.0, left: 10.0, right: 10.0),
+                            child: Text(
+                              "Are you sure you want to remove ${contact['name']} from the directory?",
+                              textAlign: TextAlign.center,
+                              style: dialogDelete,
+                            ),
+                          ),
+                          actions: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8.0, right: 20.0, bottom: 10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      reference
+                                          .child(contact['key'])
+                                          .remove()
+                                          .whenComplete(
+                                              () => Navigator.pop(context));
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.red,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Delete',
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 17.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                    ],
-                  ).show(context);
-                },
-                child: Container(
-                    height: 35.0,
-                    width: 35.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Color(0xfff1f1f1),
-                    ),
-                    child: Icon(
-                      CupertinoIcons.trash,
-                      size: 23.0,
-                      color: Colors.red[600],
-                    )),
-              )
-            ],
-          ):Icon(CupertinoIcons.star_fill,color: Colors.yellow,),
+                        ).show(context);
+                      },
+                      child: Container(
+                          height: 35.0,
+                          width: 35.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: Color(0xfff1f1f1),
+                          ),
+                          child: Icon(
+                            CupertinoIcons.trash,
+                            size: 23.0,
+                            color: Colors.red[600],
+                          )),
+                    )
+                  ],
+                )
+              : Icon(
+                  CupertinoIcons.star_fill,
+                  color: Colors.yellow,
+                ),
         ),
       ),
     );
@@ -241,11 +252,15 @@ class _FavScreenState extends State<FavScreen> {
             Expanded(
                 child: FirebaseAnimatedList(
                     query: _ref!,
+                    defaultChild: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    ),
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
-                      
                       Map contact = snapshot.value;
-                      print(contact);
+                      //print(contact);
 
                       return _buildContactItem(contact: contact);
                     })),

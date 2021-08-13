@@ -13,8 +13,9 @@ class CallLogs {
       case CallType.outgoing:
         return CircleAvatar(
             maxRadius: 30,
-            foregroundColor: Colors.green,
-            backgroundColor: Colors.greenAccent);
+            foregroundColor: Colors.black,
+            backgroundImage: AssetImage("assets/images/avatar_recents.png"));
+
       case CallType.missed:
         return CircleAvatar(
             maxRadius: 30,
