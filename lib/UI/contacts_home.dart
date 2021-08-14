@@ -62,167 +62,165 @@ class _ContactsHomeState extends State<ContactsHome> {
                       contactKey: contact['key'],
                     )));
       },
-      child: Card(
-        color: Colors.white,
-        shadowColor: Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: ListTile(
-            leading: image != null
-                ? Image.network(contact['photo'])
-                : Image.asset('assets/images/avatar.png'),
-            title: Text(contact['name'],
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(contact['designation']),
-            trailing: FirebaseAuth.instance.currentUser != null
-                ? Wrap(
-                    spacing: 20.0,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditContact(
-                                        contactKey: contact['key'],
-                                      )));
-                        },
-                        child: Container(
-                            height: 35.0,
-                            width: 35.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              color: Color(0xfff1f1f1),
+      child: ListTile(
+          leading: image != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: FittedBox(
+                      fit: BoxFit.cover,
+                      clipBehavior: Clip.hardEdge,
+                      child: Image.network(contact['photo'])))
+              : Image.asset('assets/images/avatar.png'),
+          title: Text(contact['name'],
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          subtitle: Text(contact['designation']),
+          trailing: FirebaseAuth.instance.currentUser != null
+              ? Wrap(
+                  spacing: 20.0,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditContact(
+                                      contactKey: contact['key'],
+                                    )));
+                      },
+                      child: Container(
+                          height: 35.0,
+                          width: 35.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: Color(0xfff1f1f1),
+                          ),
+                          child: Icon(
+                            Icons.edit_rounded,
+                            size: 24.0,
+                            color: Color(0xff666666),
+                          )),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        NAlertDialog(
+                          //Dialog Box
+                          blur: 2.0,
+                          dialogStyle: DialogStyle(titleDivider: true),
+                          title: Padding(
+                            padding:
+                                const EdgeInsets.only(top: 12.0, left: 12.0),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 30.0,
+                                  backgroundColor: Color(0xffF8F3F3),
+                                  child: Icon(
+                                    CupertinoIcons.trash,
+                                    color: Colors.red,
+                                    size: 30.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text("Delete this contact?")
+                              ],
                             ),
-                            child: Icon(
-                              Icons.edit_rounded,
-                              size: 24.0,
-                              color: Color(0xff666666),
-                            )),
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          NAlertDialog(
-                            //Dialog Box
-                            blur: 2.0,
-                            dialogStyle: DialogStyle(titleDivider: true),
-                            title: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 12.0, left: 12.0),
+                          ),
+                          content: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 4.0, left: 10.0, right: 10.0),
+                            child: Text(
+                              "Are you sure you want to remove ${contact['name']} from the directory?",
+                              textAlign: TextAlign.center,
+                              style: dialogDelete,
+                            ),
+                          ),
+                          actions: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8.0, right: 20.0, bottom: 10.0),
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  CircleAvatar(
-                                    radius: 30.0,
-                                    backgroundColor: Color(0xffF8F3F3),
-                                    child: Icon(
-                                      CupertinoIcons.trash,
-                                      color: Colors.red,
-                                      size: 30.0,
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                   SizedBox(
                                     width: 10.0,
                                   ),
-                                  Text("Delete this contact?")
-                                ],
-                              ),
-                            ),
-                            content: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 4.0, left: 10.0, right: 10.0),
-                              child: Text(
-                                "Are you sure you want to remove ${contact['name']} from the directory?",
-                                textAlign: TextAlign.center,
-                                style: dialogDelete,
-                              ),
-                            ),
-                            actions: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, right: 20.0, bottom: 10.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      reference
+                                          .child(contact['key'])
+                                          .remove()
+                                          .whenComplete(
+                                              () => Navigator.pop(context));
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.red,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        'Cancel',
+                                        'Delete',
                                         style: TextStyle(
-                                            fontSize: 18.0,
-                                            color: Colors.black,
+                                            fontFamily: "Poppins",
+                                            fontSize: 17.0,
+                                            color: Colors.white,
                                             fontWeight: FontWeight.w500),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        reference
-                                            .child(contact['key'])
-                                            .remove()
-                                            .whenComplete(
-                                                () => Navigator.pop(context));
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.red,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Delete',
-                                          style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontSize: 17.0,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ).show(context);
-                        },
-                        child: Container(
-                            height: 35.0,
-                            width: 35.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              color: Color(0xfff1f1f1),
                             ),
-                            child: Icon(
-                              CupertinoIcons.trash,
-                              size: 23.0,
-                              color: Colors.red[600],
-                            )),
-                      )
-                    ],
-                  )
-                : InkWell(
-                    onTap: () async {
-                      var number = contact['phone']; //set the number here
-                      bool? res =
-                          await FlutterPhoneDirectCaller.callNumber(number);
-                    },
-                    child: Container(
-                        height: 35.0,
-                        width: 35.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          color: Color(0xffB9FFB8),
-                        ),
-                        child: Icon(
-                          Icons.phone,
-                          size: 24.0,
-                          color: Colors.black,
-                        )),
-                  )),
-      ),
+                          ],
+                        ).show(context);
+                      },
+                      child: Container(
+                          height: 35.0,
+                          width: 35.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: Color(0xfff1f1f1),
+                          ),
+                          child: Icon(
+                            CupertinoIcons.trash,
+                            size: 23.0,
+                            color: Colors.red[600],
+                          )),
+                    )
+                  ],
+                )
+              : InkWell(
+                  onTap: () async {
+                    var number = contact['phone']; //set the number here
+                    bool? res =
+                        await FlutterPhoneDirectCaller.callNumber(number);
+                  },
+                  child: Container(
+                      height: 35.0,
+                      width: 35.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: Color(0xffB9FFB8),
+                      ),
+                      child: Icon(
+                        Icons.phone,
+                        size: 24.0,
+                        color: Colors.black,
+                      )),
+                )),
     );
   }
 
@@ -579,8 +577,41 @@ class _ContactsHomeState extends State<ContactsHome> {
                 ],
               ),
             ),
+            SizedBox(height: 20.0),
+            FirebaseAuth.instance.currentUser != null
+                ? Expanded(
+                  child: Container(
+                    height: 80.0,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                          Text("Add Contacts", style: sideHeaders),
+                          SizedBox(height: 10.0),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddContact()));
+                            },
+                            child: Container(
+                                height: 40.0,
+                                width: 40.0,
+                                decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                child: Icon(
+                                  CupertinoIcons.add,
+                                  color: Colors.white,
+                                )),
+                          )
+                        ])),
+                )
+                : Container(
+                    
+                  ),
             Container(
-                margin: EdgeInsets.only(top: 25.0, right: 260.0),
+                margin: EdgeInsets.only(top: 10.0, right: 260.0),
                 child: Text(
                   "Contacts",
                   style: sideHeaders,
@@ -591,6 +622,7 @@ class _ContactsHomeState extends State<ContactsHome> {
                     defaultChild: Center(
                         child: CircularProgressIndicator(color: Colors.black)),
                     query: _ref!,
+                    padding: EdgeInsets.only(bottom: 12.0),
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
                       Map contact = snapshot.value;
