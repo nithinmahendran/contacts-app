@@ -35,6 +35,8 @@ class _ContactsHomeState extends State<ContactsHome> {
       FirebaseDatabase.instance.reference().child('CSE');
   List<String> depts = ['CSE', 'ISE', 'ME', 'ECE', 'CV', 'DS', 'AI'];
   String? deptPointer;
+
+  get index => null;
   @override
   void initState() {
     // TODO: implement initState
@@ -62,16 +64,19 @@ class _ContactsHomeState extends State<ContactsHome> {
                       contactKey: contact['key'],
                     )));
       },
-      child: Card(
-        color: Colors.white,
-        shadowColor: Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(width: 1, color: Colors.grey.shade200))),
+        padding: EdgeInsets.all(5.0),
         child: ListTile(
-            leading: image != null
-                ? Image.network(contact['photo'])
-                : Image.asset('assets/images/avatar.png'),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: image != null
+                  ? Image.network(contact['photo'],
+                      width: 60, height: 60, fit: BoxFit.cover)
+                  : Image.asset('assets/images/avatar.png'),
+            ),
             title: Text(contact['name'],
                 style: TextStyle(fontWeight: FontWeight.bold)),
             subtitle: Text(contact['designation']),
