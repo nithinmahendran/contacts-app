@@ -15,6 +15,7 @@ class _IntroScreenState extends State<IntroScreen> {
   final _pageController = PageController();
   final _currentPageNotifier = ValueNotifier<int>(0);
   String? _chosenValue;
+  List<String> depts = ['CSE', 'ISE', 'ME', 'ECE', 'CV', 'DS', 'AI'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

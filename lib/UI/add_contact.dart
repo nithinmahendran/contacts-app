@@ -33,7 +33,7 @@ class _AddContactState extends State<AddContact> {
   Timer? _timer;
   late double _progress;
 
-  final _ref = FirebaseDatabase.instance.reference().child("CSE");
+  final _ref = FirebaseDatabase.instance.reference();
 
   chooseImage(ImageSource source) async {
     final pickedFile = await picker.getImage(source: source);
@@ -81,7 +81,7 @@ class _AddContactState extends State<AddContact> {
       'deptId': "null"
     };
 
-    _ref.push().set(contactData).then((_) {
+    _ref.child(department!).push().set(contactData).then((_) {
       print("Completed Adding Contact");
       EasyLoading.dismiss();
     });

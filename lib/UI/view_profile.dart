@@ -1,6 +1,7 @@
 import 'package:contactsapp/UI/edit_contact.dart';
 import 'package:contactsapp/global.dart';
 import 'package:favorite_button/favorite_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -82,11 +83,11 @@ class _ViewContactState extends State<ViewContact> {
                               contactKey: widget.contactKey!,
                             )));
               },
-              child: Icon(
+              child: FirebaseAuth.instance.currentUser != null ? Icon(
                 Icons.edit_rounded,
                 size: 24.0,
                 color: Colors.black,
-              ),
+              ):Text(""),
             ),
           )
         ],
