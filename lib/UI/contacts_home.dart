@@ -21,8 +21,11 @@ import 'package:ndialog/ndialog.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
+import 'contact_screen.dart';
+
 class ContactsHome extends StatefulWidget {
-  const ContactsHome({Key? key}) : super(key: key);
+  String? depts;
+  ContactsHome({this.depts});
 
   @override
   _ContactsHomeState createState() => _ContactsHomeState();
@@ -30,26 +33,35 @@ class ContactsHome extends StatefulWidget {
 
 class _ContactsHomeState extends State<ContactsHome> {
   List<bool> isSelected = [false, false, false, false, false, false, false];
+  List<String> deptsList = ['CSE', 'ISE', 'ME', 'ECE', 'CV', 'DS', 'AI'];
+  int indexDep = 0;
   Query? _ref;
-  DatabaseReference reference =
-      FirebaseDatabase.instance.reference().child('CSE');
-  List<String> depts = ['CSE', 'ISE', 'ME', 'ECE', 'CV', 'DS', 'AI'];
-  String? deptPointer;
+  DatabaseReference? reference;
+  DatabaseReference? _favRef;
+  //Map? deptKey;
+  String? deptMainId;
+  DatabaseReference? deptRef;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _ref =
-        FirebaseDatabase.instance.reference().child('CSE').orderByChild('name');
+    reference = FirebaseDatabase.instance.reference().child('CSE');
+    _favRef = FirebaseDatabase.instance.reference().child('FAVS');
+    getDeptid();
+    // _ref = FirebaseDatabase.instance
+    //     .reference()
+    //     .child(depts[indexDep])
+    //     .orderByChild('name');
   }
 
-  void readData() {
-    _ref =
-        FirebaseDatabase.instance.reference().child('CSE').orderByChild('name');
-    _ref!.once().then((DataSnapshot snapshot) {
-      Map contact = snapshot.value;
-    });
-  }
+  // void readData() {
+  //   _ref =
+  //       FirebaseDatabase.instance.reference().child('CSE').orderByChild('name');
+  //   _ref!.once().then((DataSnapshot snapshot) {
+  //     Map contact = snapshot.value;
+  //   });
+  // }
 
   Widget _buildItem({Map? contact}) {
     String? image = contact!['photo'];
@@ -65,15 +77,15 @@ class _ContactsHomeState extends State<ContactsHome> {
       child: ListTile(
           leading: image != null
               ? Container(
-                height:48.0,
-                width: 48.0,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: FittedBox(
-                        fit: BoxFit.cover,
-                        clipBehavior: Clip.hardEdge,
-                        child: Image.network(contact['photo']))),
-              )
+                  height: 48.0,
+                  width: 48.0,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: FittedBox(
+                          fit: BoxFit.cover,
+                          clipBehavior: Clip.hardEdge,
+                          child: Image.network(contact['photo']))),
+                )
               : Image.asset('assets/images/avatar.png'),
           title: Text(contact['name'],
               style: TextStyle(fontWeight: FontWeight.bold)),
@@ -164,7 +176,12 @@ class _ContactsHomeState extends State<ContactsHome> {
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
-                                      reference
+                                      _favRef!
+                                          .child(contact['key'])
+                                          .remove()
+                                          .whenComplete(
+                                              () => print('Removed Favs'));
+                                      reference!
                                           .child(contact['key'])
                                           .remove()
                                           .whenComplete(
@@ -228,10 +245,26 @@ class _ContactsHomeState extends State<ContactsHome> {
     );
   }
 
-
+  getDeptid() async {
+    deptRef = FirebaseDatabase.instance.reference().child('MISC');
+    DataSnapshot snapshot = await deptRef!.once();
+    Map deptKey = snapshot.value;
+    deptMainId = deptKey['depts'];
+    print('${deptMainId} Inside dept id function');
+  }
 
   @override
   Widget build(BuildContext context) {
+    //print('\n\n\n\n\\n${depts[indexDep]}\n\n\n\n````````````');
+    _ref =
+        FirebaseDatabase.instance.reference().child('CSE').orderByChild('name');
+    // deptRef = FirebaseDatabase.instance.reference().child('MISC');
+    // deptRef!.once().then((DataSnapshot snapshot) {
+
+    //     deptKey = snapshot.value;
+
+    //   print('${deptKey!['depts']} Inside snapshot');
+    // });
     return Align(
       alignment: Alignment.center,
       child: Padding(
@@ -347,8 +380,20 @@ class _ContactsHomeState extends State<ContactsHome> {
                                   indexBtn < isSelected.length;
                                   indexBtn++) {
                                 if (indexBtn == index) {
-                                  print(depts[index]);
-                                  deptPointer = depts[index];
+                                  indexDep = index;
+                                  //print(deptsList[indexDep]);
+                                  if (deptMainId == deptsList[indexDep]) {
+                                    print('successfull bich');
+                                  }
+                                  setState(() {
+                                    _ref = FirebaseDatabase.instance
+                                        .reference()
+                                        .child(deptsList[index])
+                                        .orderByChild('name');
+                                    //Navigator.pushReplacement(
+                                    // context, MaterialPageRoute(builder: (context)=>ContactsScreen()));
+                                  });
+                                  //deptPointer = depts[index];
                                   isSelected[indexBtn] = !isSelected[indexBtn];
                                 } else {
                                   isSelected[indexBtn] = false;
@@ -364,34 +409,34 @@ class _ContactsHomeState extends State<ContactsHome> {
             SizedBox(height: 20.0),
             FirebaseAuth.instance.currentUser != null
                 ? Container(
-                  height: 80.0,
+                    height: 80.0,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                        Text("Add Contacts", style: sideHeaders),
-                        SizedBox(height: 10.0),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddContact()));
-                          },
-                          child: Container(
-                              height: 40.0,
-                              width: 40.0,
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              child: Icon(
-                                CupertinoIcons.add,
-                                color: Colors.white,
-                              )),
-                        )
-                      ]))
+                          Text("Add Contacts", style: sideHeaders),
+                          SizedBox(height: 10.0),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddContact()));
+                            },
+                            child: Container(
+                                height: 40.0,
+                                width: 40.0,
+                                decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                child: Icon(
+                                  CupertinoIcons.add,
+                                  color: Colors.white,
+                                )),
+                          )
+                        ]))
                 : Container(
                     //height: 80.0,
-                  ),
+                    ),
             Container(
                 margin: EdgeInsets.only(top: 10.0, right: 260.0),
                 child: Text(
@@ -408,9 +453,7 @@ class _ContactsHomeState extends State<ContactsHome> {
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
                       Map contact = snapshot.value;
-
                       contact['key'] = snapshot.key;
-
                       return _buildItem(contact: contact);
                     })),
           ],

@@ -148,13 +148,18 @@ class _ViewContactState extends State<ViewContact> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Column(
-                            children: [
-                              Text(contactName.toString(),
-                                  style: introScreen,
-                                  textAlign: TextAlign.center),
-                              Text(phone.toString())
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(left:8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(contactName.toString(),
+                                    style: introScreen,
+                                    textAlign: TextAlign.center),
+                                Text(phone.toString())
+                              ],
+                            ),
                           ),
                           Padding(
                               padding: const EdgeInsets.only(left: 30.0),

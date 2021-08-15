@@ -1,5 +1,6 @@
 import 'package:contactsapp/UI/contact_screen.dart';
 import 'package:contactsapp/global.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -15,7 +16,9 @@ class _IntroScreenState extends State<IntroScreen> {
   final _pageController = PageController();
   final _currentPageNotifier = ValueNotifier<int>(0);
   String? _chosenValue;
-  List<String> depts = ['CSE', 'ISE', 'ME', 'ECE', 'CV', 'DS', 'AI'];
+  String? depts;
+  final _ref = FirebaseDatabase.instance.reference();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,6 +106,9 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   Widget intro2() {
+    Map<String?, String?> deptKey = {
+      'depts': depts,
+    };
     return Column(
       children: [
         Padding(
@@ -169,13 +175,13 @@ class _IntroScreenState extends State<IntroScreen> {
                     ),
 
                     items: <String>[
-                      'Computer Science & Engineering',
-                      'Information Science & Engineering',
-                      'Mechanical Engineering',
-                      'Electronics & Communications Engineering',
-                      'Civil Engineering',
-                      'Artifical Intelligence',
-                      'Data Science',
+                      'CSE',
+                      'ISE',
+                      'ME',
+                      'ECE',
+                      'CV',
+                      'AI',
+                      'DS',
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -199,7 +205,8 @@ class _IntroScreenState extends State<IntroScreen> {
                     onChanged: (String? value) {
                       setState(() {
                         _chosenValue = value;
-                        print(value);
+                        depts = value;
+                        print("${depts} inside intro screen");
                       });
                     },
                   ),
@@ -213,10 +220,16 @@ class _IntroScreenState extends State<IntroScreen> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
+                    _ref.child("MISC").set(deptKey).then((_) {
+                      print("${deptKey} Adding DeptKey");
+                      //print(depts);
+                    });
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ContactsScreen()));
+                            builder: (context) => ContactsScreen(
+                                  depts: depts,
+                                )));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
