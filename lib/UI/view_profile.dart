@@ -38,6 +38,7 @@ class _ViewContactState extends State<ViewContact> {
   final snackBarRemove = SnackBar(
     content: const Text('Removed from favorites.'),
     backgroundColor: Colors.black,
+    
   );
   final addMessage = SnackBar(
     content: const Text('Added to favorties.'),
@@ -47,7 +48,7 @@ class _ViewContactState extends State<ViewContact> {
   @override
   void initState() {
     super.initState();
-    _ref = FirebaseDatabase.instance.reference().child('CSE');
+    _ref = FirebaseDatabase.instance.reference().child('ISE');
     _favRef = FirebaseDatabase.instance.reference().child('FAVS');
     getContactViewDetails();
   }
@@ -149,20 +150,23 @@ class _ViewContactState extends State<ViewContact> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left:8.0),
+                            padding: const EdgeInsets.only(left:18.0,top: 10.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(contactName.toString(),
-                                    style: introScreen,
-                                    textAlign: TextAlign.center),
+                                Container(
+                                  width: 210.0,
+                                  child: Text(contactName.toString(),
+                                      style: TextStyle(fontSize: 23.0, color: Colors.black, fontWeight: FontWeight.w600),
+                                      textAlign: TextAlign.center),
+                                ),
                                 Text(phone.toString())
                               ],
                             ),
                           ),
                           Padding(
-                              padding: const EdgeInsets.only(left: 30.0),
+                              padding: const EdgeInsets.only(right: 8.0,left: 20.0),
                               child: StarButton(
                                 isStarred: isFav,
                                 iconSize: 50.0,
@@ -284,6 +288,7 @@ class _ViewContactState extends State<ViewContact> {
   delFav() async {
     _ref!.child(widget.contactKey!).update({'isFav': 'false'});
     _favRef!.child(widget.contactKey!).remove();
+    
     ScaffoldMessenger.of(context).showSnackBar(snackBarRemove);
   }
 

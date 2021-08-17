@@ -38,7 +38,6 @@ class _FavScreenState extends State<FavScreen> {
         .reference()
         .child('FAVS')
         .orderByChild('name');
-    
   }
 
   Widget _buildContactItem({Map? contact}) {
@@ -52,15 +51,28 @@ class _FavScreenState extends State<FavScreen> {
                       contactKey: contact['key'],
                     )));
       },
-      child: Card(
-        color: Colors.white,
-        shadowColor: Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(width: 1, color: Colors.grey.shade200))),
+        padding: EdgeInsets.all(5.0),
         child: ListTile(
           leading: image != null
-              ? Image.network(contact['photo'])
+              ? Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              width: 1, color: Colors.grey.shade200))),
+                  // padding:EdgeInsets.all(5.0),
+                  height: 48.0,
+                  width: 48.0,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: FittedBox(
+                          fit: BoxFit.cover,
+                          clipBehavior: Clip.hardEdge,
+                          child: Image.network(contact['photo']))),
+                )
               : Image.asset('assets/images/avatar.png'),
           title: Text(contact['name'],
               style: TextStyle(fontWeight: FontWeight.bold)),
