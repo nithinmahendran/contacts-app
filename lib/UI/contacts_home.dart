@@ -36,12 +36,21 @@ class _ContactsHomeState extends State<ContactsHome> {
   List<String> deptsList = ['CSE', 'ISE', 'ME', 'ECE', 'CV', 'DS', 'AI'];
   int indexDep = 0;
   Query? _ref;
+
   DatabaseReference? reference;
   DatabaseReference? _favRef;
   DatabaseReference? listRef;
   //Map? deptKey;
   String? deptMainId;
   DatabaseReference? deptRef;
+
+
+  DatabaseReference reference =
+      FirebaseDatabase.instance.reference().child('CSE');
+  List<String> depts = ['CSE', 'ISE', 'ME', 'ECE', 'CV', 'DS', 'AI'];
+  String? deptPointer;
+
+  get index => null;
 
   @override
   void initState() {
@@ -81,6 +90,7 @@ class _ContactsHomeState extends State<ContactsHome> {
                 bottom: BorderSide(width: 1, color: Colors.grey.shade200))),
         padding: EdgeInsets.all(5.0),
         child: ListTile(
+
             leading: image != null
                 ? Container(
                     decoration: BoxDecoration(
@@ -98,6 +108,15 @@ class _ContactsHomeState extends State<ContactsHome> {
                             child: Image.network(contact['photo']))),
                   )
                 : Image.asset('assets/images/avatar.png'),
+
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: image != null
+                  ? Image.network(contact['photo'],
+                      width: 60, height: 60, fit: BoxFit.cover)
+                  : Image.asset('assets/images/avatar.png'),
+            ),
+
             title: Text(contact['name'],
                 style: TextStyle(fontWeight: FontWeight.bold)),
             subtitle: Text(contact['designation']),

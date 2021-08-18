@@ -36,7 +36,7 @@ class _AddContactState extends State<AddContact> {
   final _ref = FirebaseDatabase.instance.reference();
 
   chooseImage(ImageSource source) async {
-    final pickedFile = await picker.getImage(source: source);
+    final pickedFile = await picker.getImage(source: source,imageQuality: 50);
 
     setState(() {
       imageFile = File(pickedFile!.path);
