@@ -41,7 +41,7 @@ class _RecentsScreenState extends State<RecentsScreen>
       });
     }
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -100,7 +100,13 @@ class _RecentsScreenState extends State<RecentsScreen>
                       child: ListView.builder(
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            child: Card(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          width: 1,
+                                          color: Colors.grey.shade200))),
+                              padding: EdgeInsets.all(5.0),
                               child: ListTile(
                                 leading: cl.getAvatar(
                                     entries.elementAt(index).callType!),

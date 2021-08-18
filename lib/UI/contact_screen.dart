@@ -14,28 +14,36 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ContactsScreen extends StatefulWidget {
-  const ContactsScreen({Key? key}) : super(key: key);
+  String? depts;
+  ContactsScreen({this.depts});
 
   @override
   _ContactsScreenState createState() => _ContactsScreenState();
 }
 
 class _ContactsScreenState extends State<ContactsScreen> {
+  String? depts1;
+  @override
+  void initState() {
+    // TODO: implement initState
+    
+    super.initState();
+  }
+
   @override
   List<bool> isSelected = [false, false, false, false, false, false, false];
   int _currentIndex = 0;
+
   List<Widget> tabs = [
     ContactsHome(),
     RecentsScreen(),
     FavScreen(),
     SettingsScreen()
-    
   ];
 
   Widget build(BuildContext context) {
+    
     return Scaffold(
-      
-      
       backgroundColor: Colors.white,
       body: tabs[_currentIndex],
       bottomNavigationBar: Container(
