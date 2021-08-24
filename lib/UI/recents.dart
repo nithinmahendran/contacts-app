@@ -136,7 +136,10 @@ class _RecentsScreenState extends State<RecentsScreen>
                       ),
                     );
                   } else {
-                    return Center(child: CircularProgressIndicator());
+                    return Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ));
                   }
                 })
           ],

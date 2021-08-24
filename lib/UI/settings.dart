@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:contactsapp/UI/about.dart';
 import 'package:contactsapp/global.dart';
 import 'package:contactsapp/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -113,17 +114,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 endIndent: 16,
               ),
               ListTileSwitch(
-                value: _value,
-                onChanged: (value) {
-                  setState(() {
-                    _value = value;
-                  });
-                },
-                visualDensity: VisualDensity.comfortable,
-                switchType: SwitchType.cupertino,
-                switchActiveColor: Colors.indigo,
-                title: Text('Dark Mode', style: settingsPage),
-              ),
+                  value: _value,
+                  onChanged: (value) {
+                    setState(() {
+                      _value = value;
+                    });
+                  },
+                  visualDensity: VisualDensity.comfortable,
+                  switchType: SwitchType.cupertino,
+                  switchActiveColor: Colors.indigo,
+                  title: Row(children: [
+                    Text('Dark Mode', style: settingsPage),
+                    Text('  (Beta)', style: TextStyle(fontSize: 12.0)),
+                  ])),
               const Divider(
                 height: 15,
                 thickness: 1,
@@ -163,16 +166,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 indent: 16,
                 endIndent: 16,
               ),
-              ListTile(
-                title: Text(
-                  'About',
-                  style: settingsPage,
-                ),
-                trailing: Padding(
-                  padding: const EdgeInsets.only(right: 15.0),
-                  child: Icon(
-                    CupertinoIcons.chevron_forward,
-                    color: Colors.black,
+              InkWell(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AboutScreen())),
+                child: ListTile(
+                  title: Text(
+                    'About',
+                    style: settingsPage,
+                  ),
+                  trailing: Padding(
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: Icon(
+                      CupertinoIcons.chevron_forward,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
@@ -329,8 +336,8 @@ dialogContent(BuildContext context) {
       ),
       Positioned(
           top: 10.0,
-          left: Consts.padding + 100,
-          right: Consts.padding + 100,
+          left: MediaQuery.of(context).size.width - 300,
+          right: MediaQuery.of(context).size.width - 300,
           child: Container(
             decoration: BoxDecoration(
                 color: Colors.black, borderRadius: BorderRadius.circular(20.0)),

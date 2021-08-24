@@ -24,12 +24,12 @@ class _IntroScreenState extends State<IntroScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: Stack(children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 190.0, bottom: 26.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SmoothPageIndicator(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 190.0, bottom: 26.0),
+                child: SmoothPageIndicator(
                     controller: _pageController, // PageController
                     count: 2,
                     effect: WormEffect(
@@ -39,17 +39,17 @@ class _IntroScreenState extends State<IntroScreen> {
                         activeDotColor: Colors.black,
                         dotColor: Color(0xffbcbcbc)), // your preferred effect
                     onDotClicked: (index) {}),
-              ],
-            ),
+              ),
+            ],
           ),
           PageView(
             controller: _pageController,
-            children: <Widget>[intro1(), intro2()],
+            children: <Widget>[intro1(context), intro2(context)],
           ),
         ]));
   }
 
-  Widget intro1() {
+  Widget intro1(BuildContext context) {
     return Column(
       children: [
         Column(
@@ -64,14 +64,14 @@ class _IntroScreenState extends State<IntroScreen> {
           ],
         ),
         SizedBox(
-          height: 60.0,
+          height: MediaQuery.of(context).size.width - 360,
         ),
         Container(
-          height: 300.0,
+          height: MediaQuery.of(context).size.width - 120,
           child: Image.asset('assets/images/pana.png'),
         ),
         SizedBox(
-          height: 23.0,
+          height: MediaQuery.of(context).size.width - 360,
         ),
         Container(
             width: 300.0,
@@ -105,7 +105,7 @@ class _IntroScreenState extends State<IntroScreen> {
     );
   }
 
-  Widget intro2() {
+  Widget intro2(BuildContext context) {
     Map<String?, String?> deptKey = {
       'depts': depts,
     };

@@ -20,12 +20,12 @@ class CallLogs {
         return CircleAvatar(
             maxRadius: 30,
             foregroundColor: Colors.red,
-            backgroundColor: Colors.greenAccent);
+            backgroundImage: AssetImage("assets/images/avatar_recents.png"));
       default:
         return CircleAvatar(
             maxRadius: 30,
             foregroundColor: Colors.indigo,
-            backgroundColor: Colors.greenAccent);
+            backgroundImage: AssetImage("assets/images/avatar_recents.png"));
     }
   }
 
